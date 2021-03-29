@@ -7,7 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Web.Backend.Data;
 using Web.Backend.IdentityServer;
+using Web.Backend.Interfaces;
 using Web.Backend.Models;
+using Web.Backend.Repositories;
 
 namespace Web.Backend
 {
@@ -27,6 +29,7 @@ namespace Web.Backend
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
 
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();

@@ -14,5 +14,6 @@ namespace Web.Backend.Data
         {
         }
 
+        public DbSet<Category> Categories { get; set; }
     }
 }
