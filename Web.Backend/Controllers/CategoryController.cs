@@ -20,6 +20,7 @@ namespace Web.Backend.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<Category>> GetAll()
         {
             var categories = await _categoryRepository.GetAllAsync();
