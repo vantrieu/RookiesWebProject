@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Web.Backend.Interfaces;
@@ -8,6 +9,7 @@ namespace Web.Backend.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize("Bearer")]
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryRepository _categoryRepository;
