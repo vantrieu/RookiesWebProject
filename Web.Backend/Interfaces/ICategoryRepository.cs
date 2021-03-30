@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.Backend.Models;
+using Web.ShareModels;
 
 namespace Web.Backend.Interfaces
 {
@@ -14,10 +15,10 @@ namespace Web.Backend.Interfaces
 
         Task<IEnumerable<Category>> GetByNameAsync(string name);
 
-        Task<int> CreateAsync(Category productType);
+        Task<Category> CreateAsync(Category model);
 
-        Task<int> UpdateAsync(int id, Category productType);
+        Task<Category> UpdateAsync(int id, Category model);
 
-        Task<int> DeleteAsync(int id);
+        Task<Category> DeleteAsync(int id);
     }
 }

@@ -20,11 +20,60 @@ namespace Web.Backend.Controllers
         }
 
         [HttpGet]
-        [Authorize]
-        public async Task<ActionResult<Category>> GetAll()
+        [AllowAnonymous]
+        public async Task<ActionResult<Category>> Get()
         {
             var categories = await _categoryRepository.GetAllAsync();
             return Ok(categories);
+        }
+
+        [HttpGet]
+        [Route("id={id}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<Category>> GetById(int id)
+        {
+            var category = await _categoryRepository.GetByIdAsync(id);
+            return Ok(category);
+        }
+
+        [HttpGet]
+        [Route("keyword={name}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<Category>> GetByName(string name)
+        {
+            var category = await _categoryRepository.GetByNameAsync(name);
+            return Ok(category);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult<Category>> Add(Category model)
+        {
+            var category = await _categoryRepository.CreateAsync(model);
+            return Ok(category);
+        }
+
+        [HttpPut]
+        [Route("id={id}")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Edit(int id, Category model)
+        {
+            var category = await _categoryRepository.UpdateAsync(id, model);
+            if (category == null)
+                return NotFound();
+            return Ok(category);
+        }
+
+
+        [HttpDelete]
+        [Route("id={id}")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var category = await _categoryRepository.DeleteAsync(id);
+            if (category == null)
+                return NotFound();
+            return Ok(category);
         }
     }
 }
