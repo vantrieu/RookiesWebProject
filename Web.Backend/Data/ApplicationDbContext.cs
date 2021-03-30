@@ -66,6 +66,11 @@ namespace Web.Backend.Data
                 .HasOne<Product>(od => od.Product)
                 .WithMany(p => p.OrderDetails)
                 .HasForeignKey(od => od.ProductId);
+
+            modelBuilder.Entity<FileImage>()
+                .HasOne<Product>(fi => fi.Product)
+                .WithOne(fi => fi.FileImage)
+                .HasForeignKey<Product>(p => p.ImageId);
         }
 
         public DbSet<Category> Categories { get; set; }
@@ -73,5 +78,6 @@ namespace Web.Backend.Data
         public DbSet<Rate> Rates { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<FileImage> FileImages { get; set; }
     }
 }

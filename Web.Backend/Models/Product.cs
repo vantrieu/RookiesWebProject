@@ -17,13 +17,11 @@ namespace Web.Backend.Models
 
         public Int64 Price { get; set; }
 
-        public string Images { get; set; }
+        public int ImageId { get; set; }
 
         public DateTime CreatedDate { get; set; }
 
         public DateTime UpdatedDate { get; set; }
-
-        public String Author { get; set; }
 
         public int CategoryId { get; set; }
 
@@ -32,5 +30,7 @@ namespace Web.Backend.Models
         public virtual ICollection<Rate> Rates { get; set; }
 
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+
+        public virtual FileImage FileImage { get; set; }
     }
 }
