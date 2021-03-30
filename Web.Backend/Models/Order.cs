@@ -16,5 +16,7 @@ namespace Web.Backend.Models
         public bool status { get; set; }
 
         public virtual User User { get; set; }
+
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

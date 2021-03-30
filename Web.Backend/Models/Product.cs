@@ -31,5 +31,6 @@ namespace Web.Backend.Models
 
         public virtual ICollection<Rate> Rates { get; set; }
 
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }
