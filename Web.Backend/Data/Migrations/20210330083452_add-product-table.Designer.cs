@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Web.Backend.Data;
 
 namespace Web.Backend.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210330083452_add-product-table")]
+    partial class addproducttable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -213,24 +215,6 @@ namespace Web.Backend.Data.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Web.Backend.Models.Rate", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("TotalRate")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Rates");
-                });
-
             modelBuilder.Entity("Web.Backend.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -361,38 +345,9 @@ namespace Web.Backend.Data.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("Web.Backend.Models.Rate", b =>
-                {
-                    b.HasOne("Web.Backend.Models.Product", "Product")
-                        .WithMany("Rates")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Web.Backend.Models.User", "User")
-                        .WithMany("Rates")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Web.Backend.Models.Category", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("Web.Backend.Models.Product", b =>
-                {
-                    b.Navigation("Rates");
-                });
-
-            modelBuilder.Entity("Web.Backend.Models.User", b =>
-                {
-                    b.Navigation("Rates");
                 });
 #pragma warning restore 612, 618
         }

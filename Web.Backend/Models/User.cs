@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
 namespace Web.Backend.Models
 {
@@ -14,5 +15,7 @@ namespace Web.Backend.Models
 
         [PersonalData]
         public string FullName { get; set; }
+
+        public virtual ICollection<Rate> Rates { get; set; }
     }
 }
