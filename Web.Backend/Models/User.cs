@@ -17,5 +17,7 @@ namespace Web.Backend.Models
         public string FullName { get; set; }
 
         public virtual ICollection<Rate> Rates { get; set; }
+
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

@@ -18,6 +18,7 @@ namespace Web.Backend.Data
             modelBuilder.Entity<Product>().HasKey(p => p.Id);
             modelBuilder.Entity<Category>().HasKey(c => c.Id);
             modelBuilder.Entity<Rate>().HasKey(r => new { r.ProductId, r.UserId });
+            modelBuilder.Entity<Order>().HasKey(o => o.Id);
 
             modelBuilder.Entity<Product>()
                 .HasOne<Category>(p => p.Category)
@@ -39,16 +40,26 @@ namespace Web.Backend.Data
 
             modelBuilder.Entity<Rate>()
                 .HasOne<User>(r => r.User)
-                .WithMany(p => p.Rates)
+                .WithMany(u => u.Rates)
                 .HasForeignKey(r => r.UserId);
             modelBuilder.Entity<User>()
                 .HasMany<Rate>(u => u.Rates)
                 .WithOne(u => u.User)
                 .HasForeignKey(r => r.UserId);
+
+            modelBuilder.Entity<Order>()
+                .HasOne<User>(o => o.User)
+                .WithMany(u => u.Orders)
+                .HasForeignKey(o => o.UserId);
+            modelBuilder.Entity<User>()
+                .HasMany<Order>(u => u.Orders)
+                .WithOne(u => u.User)
+                .HasForeignKey(o => o.UserId);
         }
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Rate> Rates { get; set; }
+        public DbSet<Order> Orders { get; set; }
     }
 }
