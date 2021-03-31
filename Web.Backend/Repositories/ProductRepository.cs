@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Web.Backend.Data;
 using Web.Backend.Interfaces;
 using Web.Backend.Models;
+using Web.ShareModels;
 
 namespace Web.Backend.Repositories
 {
@@ -37,6 +38,7 @@ namespace Web.Backend.Repositories
 
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
+            //var products = await _context.Products.Include(p => p.ProductFileImage).ToListAsync();
             var products = await _context.Products.ToListAsync();
             return products;
         }
@@ -64,7 +66,7 @@ namespace Web.Backend.Repositories
             product.Description = model.Description;
             product.Quantities = model.Quantities;
             product.Price = model.Price;
-            product.ImageId = model.ImageId;
+            //product.FileImageId = model.FileImageId;
             product.UpdatedDate = DateTime.Today;
             product.CategoryId = model.CategoryId;
             await _context.SaveChangesAsync();

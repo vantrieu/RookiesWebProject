@@ -17,8 +17,6 @@ namespace Web.Backend.Models
 
         public Int64 Price { get; set; }
 
-        public int ImageId { get; set; }
-
         public DateTime CreatedDate { get; set; }
 
         public DateTime UpdatedDate { get; set; }
@@ -29,8 +27,6 @@ namespace Web.Backend.Models
 
         public virtual ICollection<Rate> Rates { get; set; }
 
-        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
-
-        public virtual FileImage FileImage { get; set; }
+        public virtual ICollection<ProductFileImage> ProductFileImages { get; set; }
     }
 }

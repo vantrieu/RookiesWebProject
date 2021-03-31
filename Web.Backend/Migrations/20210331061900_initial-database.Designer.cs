@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Web.Backend.Data;
 
-namespace Web.Backend.Data.Migrations
+namespace Web.Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210330090111_add-rate-table")]
-    partial class addratetable
+    [Migration("20210331061900_initial-database")]
+    partial class initialdatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -174,15 +174,71 @@ namespace Web.Backend.Data.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Web.Backend.Models.Product", b =>
+            modelBuilder.Entity("Web.Backend.Models.FileImage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Author")
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FileLocation")
                         .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FileImages");
+                });
+
+            modelBuilder.Entity("Web.Backend.Models.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("status")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Web.Backend.Models.OrderDetail", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Total")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderDetails");
+                });
+
+            modelBuilder.Entity("Web.Backend.Models.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -191,9 +247,6 @@ namespace Web.Backend.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Images")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -213,6 +266,21 @@ namespace Web.Backend.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Web.Backend.Models.ProductFileImage", b =>
+                {
+                    b.Property<int>("FileImageId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FileImageId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductFileImages");
                 });
 
             modelBuilder.Entity("Web.Backend.Models.Rate", b =>
@@ -352,10 +420,36 @@ namespace Web.Backend.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Web.Backend.Models.Order", b =>
+                {
+                    b.HasOne("Web.Backend.Models.User", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Web.Backend.Models.OrderDetail", b =>
+                {
+                    b.HasOne("Web.Backend.Models.Order", null)
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Web.Backend.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Web.Backend.Models.Product", b =>
                 {
                     b.HasOne("Web.Backend.Models.Category", "Category")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -363,37 +457,54 @@ namespace Web.Backend.Data.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("Web.Backend.Models.ProductFileImage", b =>
+                {
+                    b.HasOne("Web.Backend.Models.FileImage", "FileImage")
+                        .WithMany()
+                        .HasForeignKey("FileImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Web.Backend.Models.Product", null)
+                        .WithMany("ProductFileImages")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FileImage");
+                });
+
             modelBuilder.Entity("Web.Backend.Models.Rate", b =>
                 {
-                    b.HasOne("Web.Backend.Models.Product", "Product")
+                    b.HasOne("Web.Backend.Models.Product", null)
                         .WithMany("Rates")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Web.Backend.Models.User", "User")
+                    b.HasOne("Web.Backend.Models.User", null)
                         .WithMany("Rates")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Web.Backend.Models.Category", b =>
+            modelBuilder.Entity("Web.Backend.Models.Order", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("Web.Backend.Models.Product", b =>
                 {
+                    b.Navigation("ProductFileImages");
+
                     b.Navigation("Rates");
                 });
 
             modelBuilder.Entity("Web.Backend.Models.User", b =>
                 {
+                    b.Navigation("Orders");
+
                     b.Navigation("Rates");
                 });
 #pragma warning restore 612, 618
