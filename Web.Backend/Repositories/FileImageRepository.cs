@@ -22,6 +22,28 @@ namespace Web.Backend.Repositories
             _webHostEnvironment = webHostEnvironment;
         }
 
+        public async Task<FileImage> DeleteAsync(int id)
+        {
+            var fileImage = await _context.FileImages.FindAsync(id);
+            if (fileImage == null)
+                return null;
+            try
+            {
+                string fileName = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                string[] temp = fileImage.FileLocation.Split('/');
+                fileName = Path.Combine(fileName, temp[2].ToString());
+                if (File.Exists(fileName))
+                {
+                    File.Delete(fileName);
+                }
+            }
+            catch { }
+
+            _context.Remove(fileImage);
+            await _context.SaveChangesAsync();
+            return fileImage;
+        }
+
         public async Task<FileImage> GetById(int id)
         {
             var fileImage = await _context.FileImages.FindAsync(id);

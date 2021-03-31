@@ -35,6 +35,7 @@ namespace Web.Backend
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IFileImageRepository, FileImageRepository>();
+            services.AddTransient<IProductFileImageRepository, ProductFileImageRepository>();
 
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();

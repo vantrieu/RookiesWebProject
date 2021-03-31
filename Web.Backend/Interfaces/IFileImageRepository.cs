@@ -9,5 +9,7 @@ namespace Web.Backend.Interfaces
         Task<FileImage> UploadAsync(IFormFile file);
 
         Task<FileImage> GetById(int id);
+
+        Task<FileImage> DeleteAsync(int id);
     }
 }

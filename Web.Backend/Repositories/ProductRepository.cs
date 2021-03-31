@@ -38,21 +38,23 @@ namespace Web.Backend.Repositories
 
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            //var products = await _context.Products.Include(p => p.ProductFileImage).ToListAsync();
-            var products = await _context.Products.ToListAsync();
+            var products = await _context.Products.Include(p => p.ProductFileImages).ThenInclude(pfi => pfi.FileImage)
+                .Include(p => p.Category).ToListAsync();
             return products;
         }
 
         public async Task<Product> GetByIdAsync(int id)
         {
-            var product = await _context.Products.FirstOrDefaultAsync(c => c.Id == id);
+            var product = await _context.Products.Include(p => p.ProductFileImages).ThenInclude(pfi => pfi.FileImage)
+                .Include(p => p.Category).Where(p => p.Id == id).FirstOrDefaultAsync();
             return product;
         }
 
         public async Task<IEnumerable<Product>> GetByNameAsync(string name)
         {
-            var product = await _context.Products.Where(c => c.Name.Contains(name)).ToListAsync();
-            return product;
+            var products = await _context.Products.Include(p => p.ProductFileImages).ThenInclude(pfi => pfi.FileImage)
+               .Include(p => p.Category).Where(c => c.Name.ToLower().Contains(name.ToLower())).ToListAsync();
+            return products;
         }
 
         public async Task<Product> UpdateAsync(int id, Product model)

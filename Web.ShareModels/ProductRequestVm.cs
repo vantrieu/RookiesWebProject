@@ -17,6 +17,6 @@ namespace Web.ShareModels
 
         public int CategoryId { get; set; }
 
-        public IFormFile image { get; set; }
+        public List<IFormFile> images { get; set; }
     }
 }
