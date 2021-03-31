@@ -64,7 +64,7 @@ namespace Web.Backend.Controllers
         }
 
         [HttpGet]
-        [Route("id={id}")]
+        [Route("{id}")]
         [AllowAnonymous]
         public async Task<ActionResult> GetById(int id)
         {
@@ -100,6 +100,43 @@ namespace Web.Backend.Controllers
             }
             else
                 return NotFound();
+
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult> Update(int id, [FromForm] ProductRequestVm model)
+        {
+            var product = await _productRepository.GetByIdAsync(id);
+            product.Name = model.Name;
+            product.Description = model.Description;
+            product.Quantities = model.Quantities;
+            product.Price = model.Price;
+            product.UpdatedDate = DateTime.Today;
+            product.CategoryId = model.CategoryId;
+            var result = await _productRepository.UpdateAsync(id, product);
+            if ((model.images != null) && (model.images.Count > 0))
+            {
+                var productFileImages = await _productFileImageRepository.GetByProductId(id);
+                if (productFileImages != null && productFileImages.Count() > 0)
+                {
+                    foreach (var productFileImage in productFileImages)
+                    {
+                        await _productFileImageRepository.DeleteAsync(productFileImage.FileImageId, productFileImage.ProductId);
+                        await _fileImageRepository.DeleteAsync(productFileImage.FileImageId);
+                    }
+                }
+                foreach (IFormFile file in model.images)
+                {
+                    var temp = await _fileImageRepository.UploadAsync(file);
+                    ProductFileImage productFileImage = new ProductFileImage();
+                    productFileImage.FileImageId = temp.Id;
+                    productFileImage.ProductId = product.Id;
+                    await _productFileImageRepository.CreateAsync(productFileImage);
+                }
+            }
+            return Ok(result);
 
         }
     }
