@@ -1,8 +1,38 @@
-﻿@{
+﻿@model IList<Web.ShareModels.Product>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center mt-5">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row">
+    @foreach (var product in Model)
+    {
+        <div class="col-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal" style="width:213px; height:54px;">
+                        <label style="font-size:23px;color:steelblue;">@product.Name</label>
+                    </h4>
+                </div>
+
+                <img class="card-img-top" style="height:450px;" src="@product.ProductFileImages.ElementAt(0).FileImage.FileLocation" alt="Card Image" />
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <label style="font-size:20px; color:#a51313"><b>Giá:@product.Price</b> VNĐ</label>
+                        </div>
+                        @if (product.Quantities != 0)
+                        {
+                            <a asp-action="Details" asp-controller="Home" class="btn btn-success" asp-route-id="">Xem thêm</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Details" asp-controller="Home" class="btn btn-danger" asp-route-id="">Hết hàng</a>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
 </div>

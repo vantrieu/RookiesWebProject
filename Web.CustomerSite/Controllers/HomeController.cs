@@ -6,21 +6,25 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.CustomerSite.Models;
+using Web.CustomerSite.Services;
 
 namespace Web.CustomerSite.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IProductApiClient _productApiClient;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IProductApiClient productApiClient)
         {
             _logger = logger;
+            _productApiClient = productApiClient;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var result = await _productApiClient.GetProduct();
+            return View(result);
         }
 
         public IActionResult Privacy()

@@ -56,6 +56,7 @@ namespace Web.CustomerSite
 
             services.AddHttpClient();
             services.AddTransient<ICategoryApiClient, CategoryApiClient>();
+            services.AddTransient<IProductApiClient, ProductApiClient>();
 
             services.AddControllersWithViews();
         }

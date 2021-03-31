@@ -77,6 +77,13 @@ namespace Web.Backend.Controllers
         public async Task<IActionResult> GetAll()
         {
             var products = await _productRepository.GetAllAsync();
+            foreach(var product in products)
+            {
+                foreach(var item in product.ProductFileImages)
+                {
+                    item.FileImage.FileLocation = "https://localhost:44314" + item.FileImage.FileLocation;
+                }
+            }
             return Ok(products);
         }
 
