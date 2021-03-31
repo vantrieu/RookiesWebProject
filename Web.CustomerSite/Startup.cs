@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.CustomerSite.Services;
 
 namespace Web.CustomerSite
 {
@@ -52,6 +53,9 @@ namespace Web.CustomerSite
                         RoleClaimType = "role"
                     };
                 });
+
+            services.AddHttpClient();
+            services.AddTransient<ICategoryApiClient, CategoryApiClient>();
 
             services.AddControllersWithViews();
         }

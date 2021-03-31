@@ -1,0 +1,12 @@
+﻿@model IList<Web.ShareModels.Category>
+
+<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+    <ul class="navbar-nav flex-grow-1">
+        @foreach (var type in Model)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">@type.Name</a>
+            </li>
+        }
+    </ul>
+</div>
