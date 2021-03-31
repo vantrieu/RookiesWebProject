@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Web.Backend.Data;
-using Web.Backend.Interfaces;
 using Web.ShareModels;
 
-namespace Web.Backend.Repositories
+namespace Web.Services
 {
     public class CategoryRepository : ICategoryRepository
     {

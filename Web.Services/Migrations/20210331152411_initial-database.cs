@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Web.Backend.Migrations
+namespace Web.Services.Migrations
 {
     public partial class initialdatabase : Migration
     {

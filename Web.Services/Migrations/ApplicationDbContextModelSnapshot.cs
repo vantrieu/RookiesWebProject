@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Web.Backend.Data;
+using Web.Services;
 
-namespace Web.Backend.Migrations
+namespace Web.Services.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -154,7 +154,7 @@ namespace Web.Backend.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Web.Backend.Models.Category", b =>
+            modelBuilder.Entity("Web.ShareModels.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -172,7 +172,7 @@ namespace Web.Backend.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Web.Backend.Models.FileImage", b =>
+            modelBuilder.Entity("Web.ShareModels.FileImage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -190,7 +190,7 @@ namespace Web.Backend.Migrations
                     b.ToTable("FileImages");
                 });
 
-            modelBuilder.Entity("Web.Backend.Models.Order", b =>
+            modelBuilder.Entity("Web.ShareModels.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -213,7 +213,7 @@ namespace Web.Backend.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Web.Backend.Models.OrderDetail", b =>
+            modelBuilder.Entity("Web.ShareModels.OrderDetail", b =>
                 {
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
@@ -231,7 +231,7 @@ namespace Web.Backend.Migrations
                     b.ToTable("OrderDetails");
                 });
 
-            modelBuilder.Entity("Web.Backend.Models.Product", b =>
+            modelBuilder.Entity("Web.ShareModels.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -266,7 +266,7 @@ namespace Web.Backend.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Web.Backend.Models.ProductFileImage", b =>
+            modelBuilder.Entity("Web.ShareModels.ProductFileImage", b =>
                 {
                     b.Property<int>("FileImageId")
                         .HasColumnType("int");
@@ -281,7 +281,7 @@ namespace Web.Backend.Migrations
                     b.ToTable("ProductFileImages");
                 });
 
-            modelBuilder.Entity("Web.Backend.Models.Rate", b =>
+            modelBuilder.Entity("Web.ShareModels.Rate", b =>
                 {
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -299,7 +299,7 @@ namespace Web.Backend.Migrations
                     b.ToTable("Rates");
                 });
 
-            modelBuilder.Entity("Web.Backend.Models.User", b =>
+            modelBuilder.Entity("Web.ShareModels.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -378,7 +378,7 @@ namespace Web.Backend.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Web.Backend.Models.User", null)
+                    b.HasOne("Web.ShareModels.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -387,7 +387,7 @@ namespace Web.Backend.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Web.Backend.Models.User", null)
+                    b.HasOne("Web.ShareModels.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -402,7 +402,7 @@ namespace Web.Backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Web.Backend.Models.User", null)
+                    b.HasOne("Web.ShareModels.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -411,31 +411,31 @@ namespace Web.Backend.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Web.Backend.Models.User", null)
+                    b.HasOne("Web.ShareModels.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Web.Backend.Models.Order", b =>
+            modelBuilder.Entity("Web.ShareModels.Order", b =>
                 {
-                    b.HasOne("Web.Backend.Models.User", "User")
+                    b.HasOne("Web.ShareModels.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Web.Backend.Models.OrderDetail", b =>
+            modelBuilder.Entity("Web.ShareModels.OrderDetail", b =>
                 {
-                    b.HasOne("Web.Backend.Models.Order", null)
+                    b.HasOne("Web.ShareModels.Order", null)
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Web.Backend.Models.Product", "Product")
+                    b.HasOne("Web.ShareModels.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -444,9 +444,9 @@ namespace Web.Backend.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Web.Backend.Models.Product", b =>
+            modelBuilder.Entity("Web.ShareModels.Product", b =>
                 {
-                    b.HasOne("Web.Backend.Models.Category", "Category")
+                    b.HasOne("Web.ShareModels.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -455,15 +455,15 @@ namespace Web.Backend.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("Web.Backend.Models.ProductFileImage", b =>
+            modelBuilder.Entity("Web.ShareModels.ProductFileImage", b =>
                 {
-                    b.HasOne("Web.Backend.Models.FileImage", "FileImage")
+                    b.HasOne("Web.ShareModels.FileImage", "FileImage")
                         .WithMany()
                         .HasForeignKey("FileImageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Web.Backend.Models.Product", null)
+                    b.HasOne("Web.ShareModels.Product", null)
                         .WithMany("ProductFileImages")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -472,34 +472,34 @@ namespace Web.Backend.Migrations
                     b.Navigation("FileImage");
                 });
 
-            modelBuilder.Entity("Web.Backend.Models.Rate", b =>
+            modelBuilder.Entity("Web.ShareModels.Rate", b =>
                 {
-                    b.HasOne("Web.Backend.Models.Product", null)
+                    b.HasOne("Web.ShareModels.Product", null)
                         .WithMany("Rates")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Web.Backend.Models.User", null)
+                    b.HasOne("Web.ShareModels.User", null)
                         .WithMany("Rates")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Web.Backend.Models.Order", b =>
+            modelBuilder.Entity("Web.ShareModels.Order", b =>
                 {
                     b.Navigation("OrderDetails");
                 });
 
-            modelBuilder.Entity("Web.Backend.Models.Product", b =>
+            modelBuilder.Entity("Web.ShareModels.Product", b =>
                 {
                     b.Navigation("ProductFileImages");
 
                     b.Navigation("Rates");
                 });
 
-            modelBuilder.Entity("Web.Backend.Models.User", b =>
+            modelBuilder.Entity("Web.ShareModels.User", b =>
                 {
                     b.Navigation("Orders");
 

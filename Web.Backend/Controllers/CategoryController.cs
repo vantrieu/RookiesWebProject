@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Web.Backend.Interfaces;
+using Web.Services;
 using Web.ShareModels;
 
 namespace Web.Backend.Controllers

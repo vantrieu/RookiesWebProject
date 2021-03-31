@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Web.ShareModels;
 
-namespace Web.Backend.Interfaces
+namespace Web.Services
 {
     public interface IProductFileImageRepository
     {

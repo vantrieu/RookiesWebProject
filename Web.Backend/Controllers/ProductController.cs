@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Web.Backend.Interfaces;
+using Web.Backend.Services;
+using Web.Services;
 using Web.ShareModels;
 
 namespace Web.Backend.Controllers
@@ -18,12 +20,18 @@ namespace Web.Backend.Controllers
         private readonly IProductRepository _productRepository;
         private readonly IFileImageRepository _fileImageRepository;
         private readonly IProductFileImageRepository _productFileImageRepository;
+        private readonly IFileServices _fileServices;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(IProductRepository productRepository, IFileImageRepository fileImageRepository, IProductFileImageRepository productFileImageRepository)
+        public ProductController(IProductRepository productRepository, IFileImageRepository fileImageRepository,
+            IProductFileImageRepository productFileImageRepository, IFileServices fileServices,
+            IWebHostEnvironment webHostEnvironment)
         {
             _productRepository = productRepository;
             _fileImageRepository = fileImageRepository;
             _productFileImageRepository = productFileImageRepository;
+            _fileServices = fileServices;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpPost]
@@ -41,17 +49,27 @@ namespace Web.Backend.Controllers
             var result = await _productRepository.CreateAsync(product);
             if ((model.images != null) && (model.images.Count > 0))
             {
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
                 foreach (IFormFile file in model.images)
                 {
-                    var temp = await _fileImageRepository.UploadAsync(file);
-                    ProductFileImage productFileImage = new ProductFileImage();
-                    productFileImage.FileImageId = temp.Id;
-                    productFileImage.ProductId = product.Id;
-                    await _productFileImageRepository.CreateAsync(productFileImage);
+                    string fileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                    string filePath = Path.Combine(uploadsFolder, fileName);
+                    var kq = _fileServices.UploadFileAsync(filePath, file);
+                    if (kq)
+                    {
+                        FileImage fileImage = new FileImage();
+                        fileImage.FileLocation = $"/images/{fileName}";
+                        fileImage.CreateDate = DateTime.Today;
+                        var temp = await _fileImageRepository.CreateAsync(fileImage);
+
+                        ProductFileImage productFileImage = new ProductFileImage();
+                        productFileImage.FileImageId = temp.Id;
+                        productFileImage.ProductId = product.Id;
+                        await _productFileImageRepository.CreateAsync(productFileImage);
+                    }
                 }
             }
             return Ok(result);
-
         }
 
         [HttpGet]
@@ -90,7 +108,15 @@ namespace Web.Backend.Controllers
                 foreach (var productFileImage in productFileImages)
                 {
                     await _productFileImageRepository.DeleteAsync(productFileImage.FileImageId, productFileImage.ProductId);
-                    await _fileImageRepository.DeleteAsync(productFileImage.FileImageId);
+                    var fileImage = await _fileImageRepository.GetById(productFileImage.FileImageId);
+                    string fileDes = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                    string[] temp = fileImage.FileLocation.Split("/");
+                    fileDes = Path.Combine(fileDes, temp[2].ToString());
+                    bool flag = _fileServices.DeleteFileAsync(fileDes);
+                    if (flag)
+                    {
+                        await _fileImageRepository.DeleteAsync(productFileImage.FileImageId);
+                    }
                 }
                 var result = await _productRepository.DeleteAsync(id);
                 if (result == null)
@@ -123,20 +149,38 @@ namespace Web.Backend.Controllers
                     foreach (var productFileImage in productFileImages)
                     {
                         await _productFileImageRepository.DeleteAsync(productFileImage.FileImageId, productFileImage.ProductId);
-                        await _fileImageRepository.DeleteAsync(productFileImage.FileImageId);
+                        var fileImage = await _fileImageRepository.GetById(productFileImage.FileImageId);
+                        string fileDes = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                        string[] temp = fileImage.FileLocation.Split("/");
+                        fileDes = Path.Combine(fileDes, temp[2].ToString());
+                        bool flag = _fileServices.DeleteFileAsync(fileDes);
+                        if (flag)
+                        {
+                            await _fileImageRepository.DeleteAsync(productFileImage.FileImageId);
+                        }
                     }
                 }
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
                 foreach (IFormFile file in model.images)
                 {
-                    var temp = await _fileImageRepository.UploadAsync(file);
-                    ProductFileImage productFileImage = new ProductFileImage();
-                    productFileImage.FileImageId = temp.Id;
-                    productFileImage.ProductId = product.Id;
-                    await _productFileImageRepository.CreateAsync(productFileImage);
+                    string fileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                    string filePath = Path.Combine(uploadsFolder, fileName);
+                    var kq = _fileServices.UploadFileAsync(filePath, file);
+                    if (kq)
+                    {
+                        FileImage fileImage = new FileImage();
+                        fileImage.FileLocation = $"/images/{fileName}";
+                        fileImage.CreateDate = DateTime.Today;
+                        var temp = await _fileImageRepository.CreateAsync(fileImage);
+
+                        ProductFileImage productFileImage = new ProductFileImage();
+                        productFileImage.FileImageId = temp.Id;
+                        productFileImage.ProductId = product.Id;
+                        await _productFileImageRepository.CreateAsync(productFileImage);
+                    }
                 }
             }
             return Ok(result);
-
         }
     }
 }

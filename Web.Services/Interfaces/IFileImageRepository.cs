@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using Web.ShareModels;
 
-namespace Web.Backend.Interfaces
+namespace Web.Services
 {
     public interface IFileImageRepository
     {
-        Task<FileImage> UploadAsync(IFormFile file);
+        Task<FileImage> CreateAsync(FileImage fileImage);
 
         Task<FileImage> GetById(int id);
 

@@ -8,10 +8,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
-using Web.Backend.Data;
 using Web.Backend.IdentityServer;
-using Web.Backend.Interfaces;
-using Web.Backend.Repositories;
+using Web.Backend.Services;
+using Web.Services;
 using Web.ShareModels;
 
 namespace Web.Backend
@@ -32,10 +31,12 @@ namespace Web.Backend
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
+
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IFileImageRepository, FileImageRepository>();
             services.AddTransient<IProductFileImageRepository, ProductFileImageRepository>();
+            services.AddTransient<IFileServices, FileServices>();
 
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();

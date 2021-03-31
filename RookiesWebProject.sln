@@ -11,9 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.CustomerSite", "Web.CustomerSite\Web.CustomerSite.csproj", "{AD03396F-8C0A-43EC-8017-43A055D59C97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.CustomerSite", "Web.CustomerSite\Web.CustomerSite.csproj", "{AD03396F-8C0A-43EC-8017-43A055D59C97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.ShareModels", "Web.ShareModels\Web.ShareModels.csproj", "{63260DDD-C256-4A43-8F64-354A206B0B6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.ShareModels", "Web.ShareModels\Web.ShareModels.csproj", "{63260DDD-C256-4A43-8F64-354A206B0B6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Services", "Web.Services\Web.Services.csproj", "{FC02EA27-5B5F-4B48-8F43-36F7498288B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{63260DDD-C256-4A43-8F64-354A206B0B6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63260DDD-C256-4A43-8F64-354A206B0B6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63260DDD-C256-4A43-8F64-354A206B0B6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC02EA27-5B5F-4B48-8F43-36F7498288B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC02EA27-5B5F-4B48-8F43-36F7498288B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC02EA27-5B5F-4B48-8F43-36F7498288B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC02EA27-5B5F-4B48-8F43-36F7498288B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
