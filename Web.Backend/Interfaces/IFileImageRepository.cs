@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
-using Web.Backend.Models;
+using Web.ShareModels;
 
 namespace Web.Backend.Interfaces
 {

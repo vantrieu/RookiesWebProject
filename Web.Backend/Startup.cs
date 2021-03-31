@@ -11,8 +11,8 @@ using System.Collections.Generic;
 using Web.Backend.Data;
 using Web.Backend.IdentityServer;
 using Web.Backend.Interfaces;
-using Web.Backend.Models;
 using Web.Backend.Repositories;
+using Web.ShareModels;
 
 namespace Web.Backend
 {

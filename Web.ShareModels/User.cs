@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 
-namespace Web.Backend.Models
+namespace Web.ShareModels
 {
     public class User : IdentityUser
     {

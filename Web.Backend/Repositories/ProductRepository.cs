@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Web.Backend.Data;
 using Web.Backend.Interfaces;
-using Web.Backend.Models;
 using Web.ShareModels;
 
 namespace Web.Backend.Repositories

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Web.ShareModels
+﻿namespace Web.ShareModels
 {
     public class CategoryVm
     {

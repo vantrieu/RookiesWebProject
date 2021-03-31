@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Web.Backend.Interfaces;
-using Web.Backend.Models;
+using Web.ShareModels;
 
 namespace Web.Backend.Controllers
 {
