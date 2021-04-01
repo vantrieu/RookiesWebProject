@@ -23,11 +23,11 @@
                         </div>
                         @if (product.Quantities != 0)
                         {
-                            <a asp-action="Details" asp-controller="Home" class="btn btn-success" asp-route-id="">Xem thêm</a>
+                            <a asp-action="Details" asp-controller="Product" class="btn btn-success" asp-route-id="@product.Id">Xem thêm</a>
                         }
                         else
                         {
-                            <a asp-action="Details" asp-controller="Home" class="btn btn-danger" asp-route-id="">Hết hàng</a>
+                            <a asp-action="Details" asp-controller="Product" class="btn btn-danger" asp-route-id="@product.Id">Hết hàng</a>
                         }
                     </div>
                 </div>

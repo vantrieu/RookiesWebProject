@@ -1,0 +1,75 @@
+﻿@model Web.ShareModels.Product
+@using Microsoft.AspNetCore.Http
+@*@inject IHttpContextAccessor HttpContextAccessor*@
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<form method="post">
+    <div class="p-5 border rounded">
+        <div class="form-group row ">
+            <div class="col-6" style="width:100%; text-align: center;">
+                <img class="img-responsive" style="width:340px; height:497px;" src="@Model.ProductFileImages.ElementAt(0).FileImage.FileLocation" />
+            </div>
+            <div class="col-6">
+
+                <div class="product-name">
+                    <h1>@Model.Name</h1>
+                </div>
+                <hr />
+                <p>
+                    <span class="item-title">Mã sản phẩm:</span>
+                    <span>
+                        <strong>
+                            @Model.Id
+                        </strong>
+                    </span>
+                </p>
+                <p>
+                    <span class="item-title">Mô tả: @Model.Description</span>
+                </p>
+                <p>
+                    <span class="item-title">Thể loại: @Model.Category.Name</span>
+                </p>
+                <p class="availability in-stock">
+                    <span class="item-title">
+                        <i>Số lượng: </i>
+                    </span>
+                    <span>
+                        <strong>
+                            @Model.Quantities
+                        </strong>
+                    </span>
+                </p>
+                <div class="price-box">
+                    <h3>@Model.Price.ToString().Insert(3, ".") VNĐ</h3>
+                </div>
+                <div class="add-to-box">
+                    @if (Model.Quantities != 0)
+                    {
+                        <button type="submit" value="Add to bag" asp-route-id="@Model.Id" class="btn btn-primary form-control">Thêm vào giỏ hàng</button>
+                    }
+                    else
+                    {
+                        <label class="btn btn-danger form-control">Đã hết hàng</label>
+                    }
+                </div>
+            </div>
+        </div>
+        <hr />
+        <strong>Các hình ảnh khác của sản phẩm:</strong>
+        <div class="row" style="display: flex; flex-wrap: wrap; margin-top: 5px;">
+            @foreach (var image in Model.ProductFileImages)
+            {
+                <div class="col-4" style="width:100%; text-align: center;">
+                    <img class="img-responsive" style="width:340px; height:497px;" src="@image.FileImage.FileLocation" alt="@Model.Name"/>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        <input hidden asp-for="@Model.Id" />
+        <a asp-controller="Home" asp-action="Index" class="btn btn-success">Quay về</a>
+    </div>
+</form>
