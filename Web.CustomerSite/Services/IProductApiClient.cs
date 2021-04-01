@@ -13,5 +13,7 @@ namespace Web.CustomerSite.Services
         Task<Product> GetProductById(int id);
 
         Task<IList<Product>> GetProductByCategory(string categoryName);
+
+        Task<IList<Product>> GetProductByArray(List<int> temp);
     }
 }

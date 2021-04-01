@@ -42,6 +42,22 @@ namespace Web.CustomerSite.Services
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsAsync<IList<Product>>();
         }
+
+        public async Task<IList<Product>> GetProductByArray(List<int> temp)
+        {
+            List<Product> lstProduct = new List<Product>();
+            var client = _httpClientFactory.CreateClient();
+            if (temp == null)
+                return lstProduct;
+            foreach (int id in temp)
+            {
+                string result = _configuration["Domain:Default"] + "/api/v1/Product/" + id;
+                var response = await client.GetAsync(result);
+                response.EnsureSuccessStatusCode();
+                lstProduct.Add(await response.Content.ReadAsAsync<Product>());
+            }
+            return lstProduct;
+        }
     }
 
 }

@@ -16,18 +16,15 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Web.CustomerSite</a>
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Web.CustomerSite</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 @await Component.InvokeAsync("TypeMenu")
-                @*<a asp-area="Customer" asp-controller="ShoppingCarts" asp-action="Index" class="nav-link">
-                        <i class="fas fa-shopping-cart"></i> &nbsp;(0)
-                    </a>*@
                 @if (HttpContextAccessor.HttpContext.Session.Get<List<int>>("ssShoppingCart") != null)
                 {
-                    <a asp-area="Customer" asp-controller="ShoppingCarts" asp-action="Index" class="nav-link">
+                    <a asp-controller="ShoppingCart" asp-action="Index" class="nav-link">
                         <i class="fas fa-shopping-cart"></i> &nbsp;
                         @{
                             var count = HttpContextAccessor.HttpContext.Session.Get<List<int>>("ssShoppingCart").Count;
@@ -37,7 +34,7 @@
                 }
                 else
                 {
-                    <a asp-area="Customer" asp-controller="ShoppingCarts" asp-action="Index" class="nav-link">
+                    <a asp-area="Customer" asp-controller="ShoppingCart" asp-action="Index" class="nav-link">
                         <i class="fas fa-shopping-cart"></i> &nbsp;
 
                         (0)
