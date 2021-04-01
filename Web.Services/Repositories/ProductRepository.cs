@@ -40,6 +40,13 @@ namespace Web.Services
             return products;
         }
 
+        public async Task<IEnumerable<Product>> GetByCategoryAsync(string categoryName)
+        {
+            var products = await _context.Products.Include(p => p.ProductFileImages).ThenInclude(pfi => pfi.FileImage)
+                .Include(p => p.Category).Where(p => p.Category.Name == categoryName).ToListAsync();
+            return products;
+        }
+
         public async Task<Product> GetByIdAsync(int id)
         {
             var product = await _context.Products.Include(p => p.ProductFileImages).ThenInclude(pfi => pfi.FileImage)

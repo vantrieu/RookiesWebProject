@@ -5,7 +5,7 @@
         @foreach (var type in Model)
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">@type.Name</a>
+                <a class="nav-link text-dark" asp-controller="Product" asp-action="Finds" asp-route-categoryName="@type.Name">@type.Name</a>
             </li>
         }
     </ul>

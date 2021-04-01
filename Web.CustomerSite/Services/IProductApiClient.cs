@@ -11,5 +11,7 @@ namespace Web.CustomerSite.Services
         Task<IList<Product>> GetProduct();
 
         Task<Product> GetProductById(int id);
+
+        Task<IList<Product>> GetProductByCategory(string categoryName);
     }
 }

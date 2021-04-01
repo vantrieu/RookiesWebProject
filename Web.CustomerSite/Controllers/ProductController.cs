@@ -28,5 +28,18 @@ namespace Web.CustomerSite.Controllers
             }
             return View(result);
         }
+
+        public async Task<IActionResult> Finds(string categoryName)
+        {
+            var results = await _productApiClient.GetProductByCategory(categoryName);
+            foreach (var product in results)
+            {
+                foreach (var item in product.ProductFileImages)
+                {
+                    item.FileImage.FileLocation = _configuration["Domain:Default"] + item.FileImage.FileLocation;
+                }
+            }
+            return View(results);
+        }
     }
 }

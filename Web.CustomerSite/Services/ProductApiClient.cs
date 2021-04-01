@@ -33,6 +33,15 @@ namespace Web.CustomerSite.Services
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsAsync<Product>();
         }
+
+        public async Task<IList<Product>> GetProductByCategory(string categoryName)
+        {
+            var client = _httpClientFactory.CreateClient();
+            string temp = _configuration["Domain:Default"] + "/api/v1/Product/category=" + categoryName;
+            var response = await client.GetAsync(temp);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsAsync<IList<Product>>();
+        }
     }
 
 }

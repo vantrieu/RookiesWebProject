@@ -18,6 +18,8 @@ namespace Web.Services
 
         Task<IEnumerable<Product>> GetByNameAsync(string name);
 
+        Task<IEnumerable<Product>> GetByCategoryAsync(string categoryName);
+
         Task<Product> UpdateAsync(int id, Product model);
     }
 }

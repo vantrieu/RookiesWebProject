@@ -105,6 +105,15 @@ namespace Web.Backend.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("category={keyword}")]
+        [AllowAnonymous]
+        public async Task<ActionResult> GetByCategory(string keyword)
+        {
+            var results = await _productRepository.GetByCategoryAsync(keyword);
+            return Ok(results);
+        }
+
         [HttpDelete]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int id)
