@@ -1,6 +1,9 @@
 ﻿@model Web.ShareModels.Product
+
 @using Microsoft.AspNetCore.Http
-@*@inject IHttpContextAccessor HttpContextAccessor*@
+@using Web.CustomerSite.Extentions
+
+@inject IHttpContextAccessor HttpContextAccessor
 
 @{
     ViewData["Title"] = "Details";
@@ -46,9 +49,24 @@
                     <h3>@Model.Price.ToString().Insert(3, ".") VNĐ</h3>
                 </div>
                 <div class="add-to-box">
+                    @{
+                        bool isInBag = false;
+                        List<int> lstCart = HttpContextAccessor.HttpContext.Session.Get<List<int>>("ssShoppingCart");
+                        if (lstCart != null && lstCart.Contains(Model.Id))
+                        {
+                            isInBag = true;
+                        }
+                    }
                     @if (Model.Quantities != 0)
                     {
-                        <button type="submit" value="Add to bag" asp-route-id="@Model.Id" class="btn btn-primary form-control">Thêm vào giỏ hàng</button>
+                        @if (isInBag)
+                        {
+                            <button type="submit" value="Remove from bag" asp-action="Remove" asp-route-id="@Model.Id" class="btn btn-danger form-control">Xóa khỏi giỏ hàng</button>
+                        }
+                        else
+                        {
+                            <button type="submit" value="Add to bag" asp-route-id="@Model.Id" class="btn btn-primary form-control">Thêm vào giỏ hàng</button>
+                        }
                     }
                     else
                     {

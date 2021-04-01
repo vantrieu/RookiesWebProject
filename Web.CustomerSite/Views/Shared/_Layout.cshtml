@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using Web.CustomerSite.Extentions
+
+@inject IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -18,9 +22,27 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 @await Component.InvokeAsync("TypeMenu")
-                <a asp-area="Customer" asp-controller="ShoppingCarts" asp-action="Index" class="nav-link">
-                    <i class="fas fa-shopping-cart"></i> &nbsp;(0)
-                </a>
+                @*<a asp-area="Customer" asp-controller="ShoppingCarts" asp-action="Index" class="nav-link">
+                        <i class="fas fa-shopping-cart"></i> &nbsp;(0)
+                    </a>*@
+                @if (HttpContextAccessor.HttpContext.Session.Get<List<int>>("ssShoppingCart") != null)
+                {
+                    <a asp-area="Customer" asp-controller="ShoppingCarts" asp-action="Index" class="nav-link">
+                        <i class="fas fa-shopping-cart"></i> &nbsp;
+                        @{
+                            var count = HttpContextAccessor.HttpContext.Session.Get<List<int>>("ssShoppingCart").Count;
+                        }
+                        (@count)
+                    </a>
+                }
+                else
+                {
+                    <a asp-area="Customer" asp-controller="ShoppingCarts" asp-action="Index" class="nav-link">
+                        <i class="fas fa-shopping-cart"></i> &nbsp;
+
+                        (0)
+                    </a>
+                }
                 <partial name="_LoginPartial" />
             </div>
         </nav>

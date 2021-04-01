@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -57,8 +59,14 @@ namespace Web.CustomerSite
             services.AddHttpClient();
             services.AddTransient<ICategoryApiClient, CategoryApiClient>();
             services.AddTransient<IProductApiClient, ProductApiClient>();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddControllersWithViews();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,6 +89,7 @@ namespace Web.CustomerSite
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
