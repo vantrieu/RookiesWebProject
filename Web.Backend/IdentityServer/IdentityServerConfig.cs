@@ -52,7 +52,7 @@ namespace Web.Backend.IdentityServer
                         "rookieshop.api"
                     },
 
-                    AccessTokenLifetime = 3600,
+                    AccessTokenLifetime = 90,
                     AllowOfflineAccess = true,
 
                 },

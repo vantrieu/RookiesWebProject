@@ -37,7 +37,7 @@ namespace Web.CustomerSite.Services
         public async Task<bool> PostOrderAsync(List<int> productIds)
         {
             var client = _httpClientFactory.CreateClient();
-            var accessToken = await _tokenServices.GetAccessTokenAsync();
+            var accessToken = await _tokenServices.RefreshTokenAsync();
             client.UseBearerToken(accessToken);
             HttpContent httpContent = new StringContent(JsonConvert.SerializeObject(productIds),
                 Encoding.UTF8, "application/json");
