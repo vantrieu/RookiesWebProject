@@ -12,6 +12,9 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Web.CustomerSite.Extentions;
+using IdentityModel.Client;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Globalization;
 
 namespace Web.CustomerSite.Services
 {
@@ -20,18 +23,21 @@ namespace Web.CustomerSite.Services
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ITokenServices _tokenServices;
 
-        public OrderApiClient(IHttpClientFactory httpClientFactory, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public OrderApiClient(IHttpClientFactory httpClientFactory, IConfiguration configuration, 
+            IHttpContextAccessor httpContextAccessor, ITokenServices tokenServices)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
+            _tokenServices = tokenServices;
         }
 
         public async Task<bool> PostOrderAsync(List<int> productIds)
         {
             var client = _httpClientFactory.CreateClient();
-            var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+            var accessToken = await _tokenServices.GetAccessTokenAsync();
             client.UseBearerToken(accessToken);
             HttpContent httpContent = new StringContent(JsonConvert.SerializeObject(productIds),
                 Encoding.UTF8, "application/json");

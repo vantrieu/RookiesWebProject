@@ -1,0 +1,49 @@
+﻿@model IList<Web.ShareModels.Product>
+@using Web.ShareModels
+
+<br />
+<h2 class="text-info">Đã đặt hàng thành công!</h2>
+<div class="form-text">
+    Đơn hàng của bạn đã được gửi đến chúng tôi. Bộ phận bán hàng sẽ liên hệ với bạn sớm nhất để xác nhận đơn hàng. <a asp-controller="Home" asp-action="Index">Nhấp để tiếp tục mua sắm</a>
+</div>
+<br />
+<div class="container border border-secondary rounded " style="padding: 15px; border-radius:5px; border:1px solid #bbb9b9">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped rounded" style="width:100%; border-radius:5px; border:1px solid #bbb9b9 ">
+                <tr class="table-info">
+                    <th style="text-align:center; width:20%"></th>
+                    <th style="text-align:center;">
+                        <label>Tên sản phẩm</label>
+                    </th>
+                    <th style="text-align:center;">
+                        <label>Loại sản phẩm</label>
+                    </th>
+                    <th style="text-align:center;">
+                        <label>Giá</label>
+                    </th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr style="padding:50px;">
+                        <td>
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">
+                                <img src="@item.ProductFileImages.ElementAt(0).FileImage.FileLocation" style="width:60px; height:90px; margin:auto; display:block; border-radius:5px; border:1px solid #bbb9b9" />
+                            </a>
+                        </td>
+                        <td style="text-align:center;">
+                            @Html.DisplayFor(x => item.Name)
+                        </td>
+                        <td style="text-align:center;">
+                            @Html.DisplayFor(x => item.Category.Name)
+                        </td>
+                        <td style="text-align:center;">
+                            @Html.DisplayFor(x => item.Price)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>

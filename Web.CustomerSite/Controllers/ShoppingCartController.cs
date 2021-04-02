@@ -46,7 +46,7 @@ namespace Web.CustomerSite.Controllers
         {
             List<int> lstCartItem = HttpContext.Session.Get<List<int>>("ssShoppingCart");
             var result = await _orderApiClient.PostOrderAsync(lstCartItem);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", "ShoppingCart");
         }
 
         public IActionResult Remove(int id)
@@ -61,6 +61,22 @@ namespace Web.CustomerSite.Controllers
             }
             HttpContext.Session.Set("ssShoppingCart", lstCartItems);
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Details(List<int> productIds)
+        {
+            List<int> lstCartItem = HttpContext.Session.Get<List<int>>("ssShoppingCart");
+            var results = await _productApiClient.GetProductByArray(lstCartItem);
+            foreach (var product in results)
+            {
+                foreach (var item in product.ProductFileImages)
+                {
+                    item.FileImage.FileLocation = _configuration["Domain:Default"] + item.FileImage.FileLocation;
+                }
+            }
+            lstCartItem = new List<int>();
+            HttpContext.Session.Set("ssShoppingCart", lstCartItem);
+            return View(results);
         }
     }
 }

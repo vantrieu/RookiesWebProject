@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Web.Services.Interfaces;
+using Web.ShareModels;
 
 namespace Web.Backend.Controllers
 {
@@ -28,7 +29,9 @@ namespace Web.Backend.Controllers
         public async Task<IActionResult> Create(List<int> productIds)
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
-            return Ok();
+            string userId = claimsIdentity.Claims.ToList().ElementAt(5).Value;
+            await _orderRepository.CreateAsync(productIds, userId);
+            return StatusCode(201);
         }
     }
 }

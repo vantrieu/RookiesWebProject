@@ -50,7 +50,11 @@ namespace Web.Backend.IdentityServer
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         "rookieshop.api"
-                    }
+                    },
+
+                    AccessTokenLifetime = 3600,
+                    AllowOfflineAccess = true,
+
                 },
 
                 // config swagger

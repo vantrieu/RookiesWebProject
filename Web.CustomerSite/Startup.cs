@@ -48,6 +48,7 @@ namespace Web.CustomerSite
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
                     options.Scope.Add("rookieshop.api");
+                    options.Scope.Add("offline_access");
 
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
@@ -60,6 +61,7 @@ namespace Web.CustomerSite
             services.AddTransient<ICategoryApiClient, CategoryApiClient>();
             services.AddTransient<IProductApiClient, ProductApiClient>();
             services.AddTransient<IOrderApiClient, OrderApiClient>();
+            services.AddTransient<ITokenServices, TokenServices>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddControllersWithViews();
