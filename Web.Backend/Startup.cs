@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using Web.Backend.IdentityServer;
 using Web.Backend.Services;
 using Web.Services;
+using Web.Services.Interfaces;
+using Web.Services.Repositories;
 using Web.ShareModels;
 
 namespace Web.Backend
@@ -37,6 +39,8 @@ namespace Web.Backend
             services.AddTransient<IFileImageRepository, FileImageRepository>();
             services.AddTransient<IProductFileImageRepository, ProductFileImageRepository>();
             services.AddTransient<IFileServices, FileServices>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IOrderDetailrepository, OrderDetailrepository>();
 
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();

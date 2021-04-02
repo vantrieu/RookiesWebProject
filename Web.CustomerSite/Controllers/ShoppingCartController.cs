@@ -15,11 +15,13 @@ namespace Web.CustomerSite.Controllers
     {
         private readonly IProductApiClient _productApiClient;
         private readonly IConfiguration _configuration;
+        private readonly IOrderApiClient _orderApiClient;
 
-        public ShoppingCartController(IProductApiClient productApiClient, IConfiguration configuration)
+        public ShoppingCartController(IProductApiClient productApiClient, IConfiguration configuration, IOrderApiClient orderApiClient)
         {
             _productApiClient = productApiClient;
             _configuration = configuration;
+            _orderApiClient = orderApiClient;
         }
 
         [Authorize]
@@ -37,21 +39,13 @@ namespace Web.CustomerSite.Controllers
             return View(results);
         }
 
-        public IActionResult Add(int id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Index")]
+        public async Task<IActionResult> IndexPost()
         {
-            List<int> lstCartItems = HttpContext.Session.Get<List<int>>("ssShoppingCart");
-            if(lstCartItems.Count != null)
-            {
-                if (!lstCartItems.Contains(id))
-                {
-                    lstCartItems.Add(id);
-                }
-            }
-            else
-            {
-                lstCartItems.Add(id);
-            }
-            HttpContext.Session.Set("ssShoppingCart", lstCartItems);
+            List<int> lstCartItem = HttpContext.Session.Get<List<int>>("ssShoppingCart");
+            var result = await _orderApiClient.PostOrderAsync(lstCartItem);
             return RedirectToAction(nameof(Index));
         }
 
