@@ -11,7 +11,7 @@ namespace Web.Backend.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    //[Authorize("Bearer")]
+    [Authorize("Bearer")]
     public class OrderController : ControllerBase
     {
         private readonly IOrderRepository _orderRepository;
@@ -24,10 +24,10 @@ namespace Web.Backend.Controllers
         }
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> Create(List<int> productIds)
         {
-            //var claimsIdentity = User.Identity as ClaimsIdentity;
+            var claimsIdentity = User.Identity as ClaimsIdentity;
             return Ok();
         }
     }
