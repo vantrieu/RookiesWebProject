@@ -1,0 +1,79 @@
+﻿@model IList<Web.ShareModels.ViewModels.OrderVm>
+
+@{
+    ViewData["Title"] = "My Order Page";
+}
+
+@if (Model.Count != 0)
+{
+    <form method="post">
+        <br /><br />
+        <h2 class="text-info">Đơn hàng của bạn!</h2>
+        <br />
+        <div class="container border border-secondary rounded " style="padding: 15px; border-radius:5px; border:1px solid #bbb9b9">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-striped rounded" style="width:100%; border-radius:5px; border:1px solid #bbb9b9 ">
+                        <tr class="table-info">
+                            <th style="text-align:center; width:20%">
+                                <label>Hình ảnh</label>
+                            </th>
+                            <th style="text-align:center; width: 100px;">
+                                <label>Mã đơn hàng</label>
+                            </th>
+                            <th style="text-align:center; width: 100px;">
+                                <label>Mã sản phẩm</label>
+                            </th>
+                            <th style="text-align:center;">
+                                <label>Tên sản phẩm</label>
+                            </th>
+                            <th style="text-align:center; width: 100px;">
+                                <label>Giá</label>
+                            </th>
+                            <th style="text-align:center;">
+                                <label>Ngày đặt hàng</label>
+                            </th>
+                            <th style="text-align:center;"></th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                    <tr style="padding:50px;">
+                        <td>
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@item.ProductId">
+                                <img src="@item.ImgUrl" style="width:60px; height:90px; margin:auto; display:block; border-radius:5px; border:1px solid #bbb9b9" />
+                            </a>
+                        </td>
+                        <td style="text-align:center;">
+                            @Html.DisplayFor(x => item.orderId)
+                        </td>
+                        <td style="text-align:center;">
+                            @Html.DisplayFor(x => item.ProductId)
+                        </td>
+                        <td style="text-align:center;">
+                            @Html.DisplayFor(x => item.Name)
+                        </td>
+                        <td style="text-align:center;">
+                            @Html.DisplayFor(x => item.Price)
+                        </td>
+
+                        <td style="text-align:center;">
+                            @Html.DisplayFor(x => item.OrderDate.UtcDateTime)
+                        </td>
+                        <td style="text-align:center">
+                            <button type="submit" class="btn btn-danger" asp-action="remove" asp-route-id="@item.ProductId">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+}
+else
+{
+    <strong style="text-align: center !important;">Không có đơn hàng nào. <a asp-controller="Home" asp-action="Index">Click vào đây để tiếp tục mua sắm!</a></strong>
+}

@@ -15,6 +15,7 @@ using Web.CustomerSite.Extentions;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Globalization;
+using Web.ShareModels.ViewModels;
 
 namespace Web.CustomerSite.Services
 {
@@ -32,6 +33,16 @@ namespace Web.CustomerSite.Services
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
             _tokenServices = tokenServices;
+        }
+
+        public async Task<IList<OrderVm>> GetMyOrder()
+        {
+            var client = _httpClientFactory.CreateClient();
+            var accessToken = await _tokenServices.RefreshTokenAsync();
+            client.UseBearerToken(accessToken);
+            var response = await client.GetAsync(_configuration["Domain:Default"] + "/api/v1/Order");
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsAsync<IList<OrderVm>>();
         }
 
         public async Task<bool> PostOrderAsync(List<int> productIds)

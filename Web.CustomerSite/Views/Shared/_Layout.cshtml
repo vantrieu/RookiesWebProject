@@ -2,6 +2,7 @@
 @using Web.CustomerSite.Extentions
 
 @inject IHttpContextAccessor HttpContextAccessor
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,6 +40,10 @@
 
                         (0)
                     </a>
+                }
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a asp-controller="Order" asp-action="Index" class="nav-link text-dark">My Order</a>
                 }
                 <partial name="_LoginPartial" />
             </div>
