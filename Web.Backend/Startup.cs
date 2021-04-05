@@ -41,6 +41,7 @@ namespace Web.Backend
             services.AddTransient<IFileServices, FileServices>();
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IOrderDetailrepository, OrderDetailrepository>();
+            services.AddTransient<IRateRepository, RateRepository>();
 
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();

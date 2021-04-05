@@ -6,9 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Web.Backend.Services;
 using Web.Services;
+using Web.Services.Interfaces;
 using Web.ShareModels;
 using Web.ShareModels.ViewModels;
 
@@ -24,16 +26,18 @@ namespace Web.Backend.Controllers
         private readonly IProductFileImageRepository _productFileImageRepository;
         private readonly IFileServices _fileServices;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IRateRepository _rateRepository;
 
         public ProductController(IProductRepository productRepository, IFileImageRepository fileImageRepository,
             IProductFileImageRepository productFileImageRepository, IFileServices fileServices,
-            IWebHostEnvironment webHostEnvironment)
+            IWebHostEnvironment webHostEnvironment, IRateRepository rateRepository)
         {
             _productRepository = productRepository;
             _fileImageRepository = fileImageRepository;
             _productFileImageRepository = productFileImageRepository;
             _fileServices = fileServices;
             _webHostEnvironment = webHostEnvironment;
+            _rateRepository = rateRepository;
         }
 
         [HttpPost]
@@ -199,6 +203,17 @@ namespace Web.Backend.Controllers
                 }
             }
             return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("rate")]
+        [Authorize]
+        public async Task<IActionResult> RateProduct(int productId, int totalStar)
+        {
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            string userId = claimsIdentity.FindFirst("sub").Value;
+            Rate rate = await _rateRepository.CreateAsync(productId, userId, totalStar);
+            return Ok(rate);
         }
     }
 }

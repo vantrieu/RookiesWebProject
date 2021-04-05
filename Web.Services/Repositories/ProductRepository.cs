@@ -16,6 +16,21 @@ namespace Web.Services
             _context = context;
         }
 
+        public async Task<bool> CheckBuyByUser(string userId, int productId)
+        {
+            var orders = await _context.Orders.Include(od => od.OrderDetails).Where(od => od.UserId == userId).ToArrayAsync();
+            if(orders.Count() != 0)
+            {
+                foreach(var order in orders)
+                {
+                    var total = await _context.OrderDetails.Where(odd => odd.ProductId == productId && odd.OrderId == order.Id).CountAsync();
+                    if (total > 0)
+                        return true;
+                }
+            }
+            return false;
+        }
+
         public async Task<Product> CreateAsync(Product model)
         {
             _context.Add(model);

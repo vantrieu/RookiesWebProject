@@ -21,5 +21,7 @@ namespace Web.Services
         Task<IEnumerable<Product>> GetByCategoryAsync(string categoryName);
 
         Task<Product> UpdateAsync(int id, Product model);
+
+        Task<bool> CheckBuyByUser(string userId, int productId);
     }
 }
