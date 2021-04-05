@@ -81,13 +81,40 @@
             @foreach (var image in Model.ProductFileImages)
             {
                 <div class="col-4" style="width:100%; text-align: center;">
-                    <img class="img-responsive" style="width:340px; height:497px;" src="@image.FileImage.FileLocation" alt="@Model.Name"/>
+                    <img class="img-responsive" style="width:340px; height:497px;" src="@image.FileImage.FileLocation" alt="@Model.Name" />
                 </div>
             }
         </div>
     </div>
-    <div class="form-group">
-        <input hidden asp-for="@Model.Id" />
-        <a asp-controller="Home" asp-action="Index" class="btn btn-success">Quay về</a>
-    </div>
 </form>
+@if (User.Identity.IsAuthenticated)
+{
+    <hr />
+    <div class="p-5 border rounded" style="text-align: center !important;">
+        <h2>ĐÁNH GIÁ SẢN PHẨM</h2>
+        @{ using (Html.BeginForm("SetRating", "Ratings"))
+            {
+                @Html.HiddenFor(x => x.Id)
+                for (int i = 1; i <= 5; i++)
+                {
+                    <input type="radio" id="Rank" name="Rank" value="@i" />
+                    for (int j = 1; j <= i; j++)
+                    {
+                        <i class="fas fa-star"></i>
+                    }
+                    for (int k = 5; k > i; k--)
+                    {
+                        <i class="far fa-star"></i>
+                    }
+                    <br />
+                }
+                <input class="btn btn-success" type="submit" value="Gửi đánh giá của bạn" />
+            }
+        }
+    </div>
+}
+
+<div class="form-group">
+    <input hidden asp-for="@Model.Id" />
+    <a asp-controller="Home" asp-action="Index" class="btn btn-success">Quay về</a>
+</div>

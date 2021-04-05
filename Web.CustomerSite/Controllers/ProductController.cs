@@ -46,7 +46,7 @@ namespace Web.CustomerSite.Controllers
 
         [HttpPost, ActionName("Details")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DetailsPost(int id)
+        public IActionResult DetailsPost(int id)
         {
             List<int> lstShoppingCart = HttpContext.Session.Get<List<int>>("ssShoppingCart");
             if (lstShoppingCart == null)

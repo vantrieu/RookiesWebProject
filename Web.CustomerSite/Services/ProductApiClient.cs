@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Web.CustomerSite.Extentions;
 using Web.ShareModels;
 
 namespace Web.CustomerSite.Services
@@ -12,11 +13,13 @@ namespace Web.CustomerSite.Services
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
+        private readonly ITokenServices _tokenServices;
 
-        public ProductApiClient(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        public ProductApiClient(IHttpClientFactory httpClientFactory, IConfiguration configuration, ITokenServices tokenServices)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
+            _tokenServices = tokenServices;
         }
         public async Task<IList<Product>> GetProduct()
         {
@@ -57,6 +60,18 @@ namespace Web.CustomerSite.Services
                 lstProduct.Add(await response.Content.ReadAsAsync<Product>());
             }
             return lstProduct;
+        }
+
+        public async Task<Rate> PostRating(int id, int rank)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var accessToken = await _tokenServices.RefreshTokenAsync();
+            client.UseBearerToken(accessToken);
+            var response = await client.PostAsync(_configuration["Domain:Default"] + "/api/v1/Product/rate?productId="
+                + id + "&totalStar=" + rank, null);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsAsync<Rate>();
+
         }
     }
 

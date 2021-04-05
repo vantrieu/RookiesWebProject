@@ -15,5 +15,7 @@ namespace Web.CustomerSite.Services
         Task<IList<Product>> GetProductByCategory(string categoryName);
 
         Task<IList<Product>> GetProductByArray(List<int> temp);
+
+        Task<Rate> PostRating(int id, int rank);
     }
 }
