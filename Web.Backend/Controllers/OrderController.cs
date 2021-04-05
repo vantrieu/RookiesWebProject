@@ -33,5 +33,15 @@ namespace Web.Backend.Controllers
             await _orderRepository.CreateAsync(productIds, userId);
             return StatusCode(201);
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetMyOrder()
+        {
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            string userId = claimsIdentity.FindFirst("sub").Value;
+            var results = await _orderRepository.GetMyOrder(userId);
+            return Ok(results);
+        }
     }
 }

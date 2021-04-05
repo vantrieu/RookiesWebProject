@@ -1,4 +1,4 @@
-﻿namespace Web.ShareModels
+﻿namespace Web.ShareModels.ViewModels
 {
     public class CategoryVm
     {
