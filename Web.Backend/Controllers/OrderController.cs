@@ -43,5 +43,22 @@ namespace Web.Backend.Controllers
             var results = await _orderRepository.GetMyOrder(userId);
             return Ok(results);
         }
+
+        [HttpDelete]
+        [Authorize]
+        public async Task<IActionResult> DeleteOrderItem(int orderId, int productId)
+        {
+            var result = await _orderDetailRepository.DeleteAsync(orderId, productId);
+            if (result == null)
+                return NotFound();
+            else
+            {
+                if(!await _orderDetailRepository.OrderDetailExistsAsync(orderId))
+                {
+                    await _orderRepository.DeleteMyOrder(orderId);
+                }
+                return Ok();
+            }
+        }
     }
 }

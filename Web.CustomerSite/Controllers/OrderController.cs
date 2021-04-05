@@ -30,5 +30,12 @@ namespace Web.CustomerSite.Controllers
             }
             return View(results);
         }
+
+        [Authorize]
+        public async Task<IActionResult> Remove(int productId, int orderId)
+        {
+            var results = await _orderApiClient.DeleteOrderItem(productId, orderId);
+            return RedirectToAction("Index", "Order");
+        }
     }
 }

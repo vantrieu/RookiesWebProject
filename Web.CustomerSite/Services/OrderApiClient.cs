@@ -35,6 +35,17 @@ namespace Web.CustomerSite.Services
             _tokenServices = tokenServices;
         }
 
+        public async Task<bool> DeleteOrderItem(int productId, int orderId)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var accessToken = await _tokenServices.RefreshTokenAsync();
+            client.UseBearerToken(accessToken);
+            var response = await client.DeleteAsync(_configuration["Domain:Default"] + "/api/v1/Order?orderId="
+                + orderId + "&productId=" + productId);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsAsync<bool>();
+        }
+
         public async Task<IList<OrderVm>> GetMyOrder()
         {
             var client = _httpClientFactory.CreateClient();

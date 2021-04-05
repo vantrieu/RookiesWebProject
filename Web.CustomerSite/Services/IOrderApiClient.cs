@@ -12,5 +12,7 @@ namespace Web.CustomerSite.Services
         Task<bool> PostOrderAsync(List<int> productIds);
 
         Task<IList<OrderVm>> GetMyOrder();
+
+        Task<bool> DeleteOrderItem(int productId, int orderId);
     }
 }

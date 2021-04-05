@@ -38,6 +38,19 @@ namespace Web.Services.Repositories
             return true;
         }
 
+        public async Task<bool> DeleteMyOrder(int orderId)
+        {
+            var flag = await _orderDetailrepository.OrderDetailExistsAsync(orderId);
+            if(!flag)
+            {
+                var order = await _context.Orders.Where(od => od.Id == orderId).FirstAsync();
+                _context.Remove(order);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
         public async Task<IEnumerable<OrderVm>> GetMyOrder(string userId)
         {
             var orders = await (from od in _context.Orders

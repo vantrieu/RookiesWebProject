@@ -11,5 +11,7 @@ namespace Web.Services.Interfaces
         Task<bool> CreateAsync(List<int> productIds, string userId);
 
         Task<IEnumerable<OrderVm>> GetMyOrder(string userId);
+
+        Task<bool> DeleteMyOrder(int orderId);
     }
 }
