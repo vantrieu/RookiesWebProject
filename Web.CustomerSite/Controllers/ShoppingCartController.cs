@@ -31,10 +31,12 @@ namespace Web.CustomerSite.Controllers
             var results = await _productApiClient.GetProductByArray(lstCartItems);
             foreach (var product in results)
             {
-                foreach (var item in product.ProductFileImages)
+                List<string> temp = new List<string>();
+                foreach (string item in product.ProductFileImages)
                 {
-                    item.FileImage.FileLocation = _configuration["Domain:Default"] + item.FileImage.FileLocation;
+                    temp.Add(_configuration["Domain:Default"] + item);
                 }
+                product.ProductFileImages = temp;
             }
             return View(results);
         }
@@ -69,10 +71,12 @@ namespace Web.CustomerSite.Controllers
             var results = await _productApiClient.GetProductByArray(lstCartItem);
             foreach (var product in results)
             {
-                foreach (var item in product.ProductFileImages)
+                List<string> temp = new List<string>();
+                foreach (string item in product.ProductFileImages)
                 {
-                    item.FileImage.FileLocation = _configuration["Domain:Default"] + item.FileImage.FileLocation;
+                    temp.Add(_configuration["Domain:Default"] + item);
                 }
+                product.ProductFileImages = temp;
             }
             lstCartItem = new List<int>();
             HttpContext.Session.Set("ssShoppingCart", lstCartItem);

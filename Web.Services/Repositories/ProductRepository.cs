@@ -132,6 +132,12 @@ namespace Web.Services
             return products;
         }
 
+        public async Task<long> GetPriceById(int productId)
+        {
+            var price = await _context.Products.Where(p => p.Id == productId).Select(p => p.Price).FirstAsync();
+            return price;
+        }
+
         public async Task<Product> UpdateAsync(int id, Product model)
         {
             var product = await _context.Products.FindAsync(id);

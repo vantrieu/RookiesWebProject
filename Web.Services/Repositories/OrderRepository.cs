@@ -14,11 +14,13 @@ namespace Web.Services.Repositories
     {
         private readonly ApplicationDbContext _context;
         private readonly IOrderDetailrepository _orderDetailrepository;
+        private readonly IProductRepository _productRepository;
 
-        public OrderRepository(ApplicationDbContext context, IOrderDetailrepository orderDetailrepository)
+        public OrderRepository(ApplicationDbContext context, IOrderDetailrepository orderDetailrepository, IProductRepository productRepository)
         {
             _context = context;
             _orderDetailrepository = orderDetailrepository;
+            _productRepository = productRepository;
         }
 
         public async Task<bool> CreateAsync(List<int> productIds, string userId)
@@ -33,7 +35,8 @@ namespace Web.Services.Repositories
             await _context.SaveChangesAsync();
             foreach (int flag in productIds)
             {
-                await _orderDetailrepository.CreateAsync(order.Id, flag);
+                long price = await _productRepository.GetPriceById(flag);
+                await _orderDetailrepository.CreateAsync(order.Id, flag, price);
             }
             return true;
         }

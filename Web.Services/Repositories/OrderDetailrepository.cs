@@ -15,9 +15,9 @@ namespace Web.Services.Repositories
         {
             _context = context;
         }
-        public async Task<OrderDetail> CreateAsync(int orderId, int productId)
+        public async Task<OrderDetail> CreateAsync(int orderId, int productId, long price)
         {
-            OrderDetail orderDetail = new OrderDetail { OrderId = orderId, ProductId = productId, Total = 1 };
+            OrderDetail orderDetail = new OrderDetail { OrderId = orderId, ProductId = productId, Total = 1, Price = price };
             _context.Add(orderDetail);
             await _context.SaveChangesAsync();
             return orderDetail;

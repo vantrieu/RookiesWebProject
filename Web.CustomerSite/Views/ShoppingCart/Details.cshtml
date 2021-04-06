@@ -1,4 +1,4 @@
-﻿@model IList<Web.ShareModels.Product>
+﻿@model IList<Web.ShareModels.ViewModels.ProductVm>
 @using Web.ShareModels
 
 <br />
@@ -29,14 +29,14 @@
                     <tr style="padding:50px;">
                         <td>
                             <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">
-                                <img src="@item.ProductFileImages.ElementAt(0).FileImage.FileLocation" style="width:60px; height:90px; margin:auto; display:block; border-radius:5px; border:1px solid #bbb9b9" />
+                                <img src="@item.GetFirstImage()" style="width:60px; height:90px; margin:auto; display:block; border-radius:5px; border:1px solid #bbb9b9" />
                             </a>
                         </td>
                         <td style="text-align:center;">
                             @Html.DisplayFor(x => item.Name)
                         </td>
                         <td style="text-align:center;">
-                            @Html.DisplayFor(x => item.Category.Name)
+                            @Html.DisplayFor(x => item.CategoryName)
                         </td>
                         <td style="text-align:center;">
                             @Html.DisplayFor(x => item.Price)

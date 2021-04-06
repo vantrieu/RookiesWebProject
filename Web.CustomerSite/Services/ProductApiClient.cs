@@ -47,9 +47,9 @@ namespace Web.CustomerSite.Services
             return await response.Content.ReadAsAsync<IList<ProductVm>>();
         }
 
-        public async Task<IList<Product>> GetProductByArray(List<int> temp)
+        public async Task<IList<ProductVm>> GetProductByArray(List<int> temp)
         {
-            List<Product> lstProduct = new List<Product>();
+            List<ProductVm> lstProduct = new List<ProductVm>();
             var client = _httpClientFactory.CreateClient();
             if (temp == null)
                 return lstProduct;
@@ -58,7 +58,7 @@ namespace Web.CustomerSite.Services
                 string result = _configuration["Domain:Default"] + "/api/v1/Product/" + id;
                 var response = await client.GetAsync(result);
                 response.EnsureSuccessStatusCode();
-                lstProduct.Add(await response.Content.ReadAsAsync<Product>());
+                lstProduct.Add(await response.Content.ReadAsAsync<ProductVm>());
             }
             return lstProduct;
         }

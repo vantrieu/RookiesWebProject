@@ -26,5 +26,7 @@ namespace Web.Services
         Task<Product> UpdateAsync(int id, Product model);
 
         Task<bool> CheckBuyByUser(string userId, int productId);
+
+        Task<long> GetPriceById(int productId);
     }
 }
