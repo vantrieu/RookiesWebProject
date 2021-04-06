@@ -17,7 +17,7 @@ namespace Web.CustomerSite.Services
             _configuration = configuration;
         }
 
-        public async Task<IList<Category>> GetType()
+        public async Task<IList<Category>> GetCategory()
         {
             var client = _httpClientFactory.CreateClient();
             var response = await client.GetAsync(_configuration["Domain:Default"] + "/api/v1/Category");

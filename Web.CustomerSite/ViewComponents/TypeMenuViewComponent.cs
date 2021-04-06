@@ -18,7 +18,7 @@ namespace Web.CustomerSite.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var types = await _categoryApiClient.GetType();
+            var types = await _categoryApiClient.GetCategory();
             return View(types);
         }
     }

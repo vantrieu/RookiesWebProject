@@ -212,8 +212,13 @@ namespace Web.Backend.Controllers
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
             string userId = claimsIdentity.FindFirst("sub").Value;
-            Rate rate = await _rateRepository.CreateAsync(productId, userId, totalStar);
-            return Ok(rate);
+            bool flag = await _productRepository.CheckBuyByUser(userId, productId);
+            if (flag)
+            {
+                Rate rate = await _rateRepository.CreateAsync(productId, userId, totalStar);
+                return Ok(rate);
+            }
+            return BadRequest();
         }
     }
 }

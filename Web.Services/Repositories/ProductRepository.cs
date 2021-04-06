@@ -18,7 +18,7 @@ namespace Web.Services
 
         public async Task<bool> CheckBuyByUser(string userId, int productId)
         {
-            var orders = await _context.Orders.Include(od => od.OrderDetails).Where(od => od.UserId == userId).ToArrayAsync();
+            var orders = await _context.Orders.Where(od => od.UserId == userId).ToArrayAsync();
             if(orders.Count() != 0)
             {
                 foreach(var order in orders)

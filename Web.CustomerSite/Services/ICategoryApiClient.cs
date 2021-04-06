@@ -8,6 +8,6 @@ namespace Web.CustomerSite.Services
 {
     public interface ICategoryApiClient
     {
-        Task<IList<Category>> GetType();
+        Task<IList<Category>> GetCategory();
     }
 }

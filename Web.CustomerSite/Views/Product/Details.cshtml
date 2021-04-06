@@ -95,19 +95,14 @@
         @{ using (Html.BeginForm("SetRating", "Ratings"))
             {
                 @Html.HiddenFor(x => x.Id)
-                for (int i = 1; i <= 5; i++)
-                {
-                    <input type="radio" id="Rank" name="Rank" value="@i" />
-                    for (int j = 1; j <= i; j++)
-                    {
-                        <i class="fas fa-star"></i>
-                    }
-                    for (int k = 5; k > i; k--)
-                    {
-                        <i class="far fa-star"></i>
-                    }
-                    <br />
-                }
+                <span class="star-rating star-5">
+                    <input type="radio" id="Rank" name="Rank" value="1"><i></i>
+                    <input type="radio" id="Rank" name="Rank" value="2"><i></i>
+                    <input type="radio" id="Rank" name="Rank" value="3"><i></i>
+                    <input type="radio" id="Rank" name="Rank" value="4"><i></i>
+                    <input type="radio" id="Rank" name="Rank" value="5"><i></i>
+                </span>
+                <br />
                 <input class="btn btn-success" type="submit" value="Gửi đánh giá của bạn" />
             }
         }
