@@ -1,4 +1,4 @@
-﻿@model IList<Web.ShareModels.Product>
+﻿@model IList<Web.ShareModels.ViewModels.ProductVm>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -15,21 +15,26 @@
                     </h4>
                 </div>
 
-                <img class="card-img-top" style="height:450px;" src="@product.ProductFileImages.ElementAt(0).FileImage.FileLocation" alt="Card Image" />
+                <img class="card-img-top" style="height:450px;" src="@product.GetFirstImage()" alt="Card Image" />
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
-                            <label style="font-size:20px; color:#a51313"><b>Giá:@product.Price</b> VNĐ</label>
+                            <p style="font-size:20px; color:#a51313;"><b>Giá:@product.Price</b> VNĐ</p>
                         </div>
-                        @if (product.Quantities != 0)
-                        {
-                            <a asp-action="Details" asp-controller="Product" class="btn btn-success" asp-route-id="@product.Id">Xem thêm</a>
-                        }
-                        else
-                        {
-                            <a asp-action="Details" asp-controller="Product" class="btn btn-danger" asp-route-id="@product.Id">Hết hàng</a>
-                        }
                     </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <p style="font-size:20px; color:#a51313;"><b>Đánh giá: @product.RateAvg()</b>&nbsp;<i class="fas fa-star" style="color:yellow;"></i></p>
+                        </div>
+                    </div>
+                    @if (product.Quantities != 0)
+                    {
+                        <a style="width: 100%;" asp-action="Details" asp-controller="Product" class="btn btn-success" asp-route-id="@product.Id">Xem thêm</a>
+                    }
+                    else
+                    {
+                        <a style="width: 100%;" asp-action="Details" asp-controller="Product" class="btn btn-danger" asp-route-id="@product.Id">Hết hàng</a>
+                    }
                 </div>
 
             </div>

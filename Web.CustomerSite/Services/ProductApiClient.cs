@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Web.CustomerSite.Extentions;
 using Web.ShareModels;
+using Web.ShareModels.ViewModels;
 
 namespace Web.CustomerSite.Services
 {
@@ -21,12 +22,12 @@ namespace Web.CustomerSite.Services
             _configuration = configuration;
             _tokenServices = tokenServices;
         }
-        public async Task<IList<Product>> GetProduct()
+        public async Task<IList<ProductVm>> GetProduct()
         {
             var client = _httpClientFactory.CreateClient();
             var response = await client.GetAsync(_configuration["Domain:Default"]+"/api/v1/Product");
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsAsync<IList<Product>>();
+            return await response.Content.ReadAsAsync<IList<ProductVm>>();
         }
 
         public async Task<Product> GetProductById(int id)

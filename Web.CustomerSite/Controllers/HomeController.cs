@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -14,17 +15,28 @@ namespace Web.CustomerSite.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IProductApiClient _productApiClient;
+        private readonly IConfiguration _configuration;
 
-        public HomeController(ILogger<HomeController> logger, IProductApiClient productApiClient)
+        public HomeController(ILogger<HomeController> logger, IProductApiClient productApiClient, IConfiguration configuration)
         {
             _logger = logger;
             _productApiClient = productApiClient;
+            _configuration = configuration;
         }
 
         public async Task<IActionResult> Index()
         {
-            var result = await _productApiClient.GetProduct();
-            return View(result);
+            var results = await _productApiClient.GetProduct();
+            foreach (var product in results)
+            {
+                List<string> temp = new List<string>();
+                foreach (string item in product.ProductFileImages)
+                {
+                    temp.Add(_configuration["Domain:Default"] + item);
+                }
+                product.ProductFileImages = temp;
+            }
+            return View(results);
         }
 
         public IActionResult Privacy()

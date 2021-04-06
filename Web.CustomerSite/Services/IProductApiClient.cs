@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.ShareModels;
+using Web.ShareModels.ViewModels;
 
 namespace Web.CustomerSite.Services
 {
     public interface IProductApiClient
     {
-        Task<IList<Product>> GetProduct();
+        Task<IList<ProductVm>> GetProduct();
 
         Task<Product> GetProductById(int id);
 

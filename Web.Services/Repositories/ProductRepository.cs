@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.ShareModels;
+using Web.ShareModels.ViewModels;
 
 namespace Web.Services
 {
@@ -19,9 +20,9 @@ namespace Web.Services
         public async Task<bool> CheckBuyByUser(string userId, int productId)
         {
             var orders = await _context.Orders.Where(od => od.UserId == userId).ToArrayAsync();
-            if(orders.Count() != 0)
+            if (orders.Count() != 0)
             {
-                foreach(var order in orders)
+                foreach (var order in orders)
                 {
                     var total = await _context.OrderDetails.Where(odd => odd.ProductId == productId && odd.OrderId == order.Id).CountAsync();
                     if (total > 0)
@@ -48,10 +49,27 @@ namespace Web.Services
             return product;
         }
 
-        public async Task<IEnumerable<Product>> GetAllAsync()
+        public async Task<IEnumerable<ProductVm>> GetAllAsync()
         {
-            var products = await _context.Products.Include(p => p.ProductFileImages).ThenInclude(pfi => pfi.FileImage)
-                .Include(p => p.Category).ToListAsync();
+            var products = await _context.Products.Include(p => p.Category).Select(p =>
+                new ProductVm
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Quantities = p.Quantities,
+                    Price = p.Price,
+                    CreatedDate = p.CreatedDate,
+                    UpdatedDate = p.UpdatedDate,
+                    CategoryName = p.Category.Name
+                }).ToListAsync();
+            foreach(var product in products)
+            {
+                var images = await _context.ProductFileImages.Where(p => p.ProductId == product.Id).Select(pfi => pfi.FileImage.FileLocation).ToListAsync();
+                product.ProductFileImages = images;
+                var rates = await _context.Rates.Where(r => r.ProductId == product.Id).Select(r => r.TotalRate).ToListAsync();
+                product.Rates = rates;
+            }
             return products;
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.ShareModels;
+using Web.ShareModels.ViewModels;
 
 namespace Web.Services
 {
@@ -12,7 +13,7 @@ namespace Web.Services
 
         Task<Product> DeleteAsync(int id);
 
-        Task<IEnumerable<Product>> GetAllAsync();
+        Task<IEnumerable<ProductVm>> GetAllAsync();
 
         Task<Product> GetByIdAsync(int id);
 
