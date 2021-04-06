@@ -30,21 +30,21 @@ namespace Web.CustomerSite.Services
             return await response.Content.ReadAsAsync<IList<ProductVm>>();
         }
 
-        public async Task<Product> GetProductById(int id)
+        public async Task<ProductVm> GetProductById(int id)
         {
             var client = _httpClientFactory.CreateClient();
             var response = await client.GetAsync(_configuration["Domain:Default"] + "/api/v1/Product/" + id);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsAsync<Product>();
+            return await response.Content.ReadAsAsync<ProductVm>();
         }
 
-        public async Task<IList<Product>> GetProductByCategory(string categoryName)
+        public async Task<IList<ProductVm>> GetProductByCategory(string categoryName)
         {
             var client = _httpClientFactory.CreateClient();
             string temp = _configuration["Domain:Default"] + "/api/v1/Product/category=" + categoryName;
             var response = await client.GetAsync(temp);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsAsync<IList<Product>>();
+            return await response.Content.ReadAsAsync<IList<ProductVm>>();
         }
 
         public async Task<IList<Product>> GetProductByArray(List<int> temp)

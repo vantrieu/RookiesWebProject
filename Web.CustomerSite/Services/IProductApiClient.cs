@@ -11,9 +11,9 @@ namespace Web.CustomerSite.Services
     {
         Task<IList<ProductVm>> GetProduct();
 
-        Task<Product> GetProductById(int id);
+        Task<ProductVm> GetProductById(int id);
 
-        Task<IList<Product>> GetProductByCategory(string categoryName);
+        Task<IList<ProductVm>> GetProductByCategory(string categoryName);
 
         Task<IList<Product>> GetProductByArray(List<int> temp);
 

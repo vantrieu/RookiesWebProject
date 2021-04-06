@@ -49,6 +49,13 @@ namespace Web.Services
             return product;
         }
 
+        public async Task<Product> FindByIdAsync(int id)
+        {
+            var product = await _context.Products.Include(p => p.ProductFileImages).ThenInclude(pfi => pfi.FileImage)
+                .Include(p => p.Category).Where(p => p.Id == id).FirstOrDefaultAsync();
+            return product;
+        }
+
         public async Task<IEnumerable<ProductVm>> GetAllAsync()
         {
             var products = await _context.Products.Include(p => p.Category).Select(p =>
@@ -63,7 +70,7 @@ namespace Web.Services
                     UpdatedDate = p.UpdatedDate,
                     CategoryName = p.Category.Name
                 }).ToListAsync();
-            foreach(var product in products)
+            foreach (var product in products)
             {
                 var images = await _context.ProductFileImages.Where(p => p.ProductId == product.Id).Select(pfi => pfi.FileImage.FileLocation).ToListAsync();
                 product.ProductFileImages = images;
@@ -73,17 +80,48 @@ namespace Web.Services
             return products;
         }
 
-        public async Task<IEnumerable<Product>> GetByCategoryAsync(string categoryName)
+        public async Task<IEnumerable<ProductVm>> GetByCategoryAsync(string categoryName)
         {
-            var products = await _context.Products.Include(p => p.ProductFileImages).ThenInclude(pfi => pfi.FileImage)
-                .Include(p => p.Category).Where(p => p.Category.Name == categoryName).ToListAsync();
+            var products = await _context.Products.Include(p => p.Category).Where(p => p.Category.Name == categoryName).Select(p =>
+                new ProductVm
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Quantities = p.Quantities,
+                    Price = p.Price,
+                    CreatedDate = p.CreatedDate,
+                    UpdatedDate = p.UpdatedDate,
+                    CategoryName = p.Category.Name
+                }).ToListAsync();
+            foreach (var product in products)
+            {
+                var images = await _context.ProductFileImages.Where(p => p.ProductId == product.Id).Select(pfi => pfi.FileImage.FileLocation).ToListAsync();
+                product.ProductFileImages = images;
+                var rates = await _context.Rates.Where(r => r.ProductId == product.Id).Select(r => r.TotalRate).ToListAsync();
+                product.Rates = rates;
+            }
             return products;
         }
 
-        public async Task<Product> GetByIdAsync(int id)
+        public async Task<ProductVm> GetByIdAsync(int id)
         {
-            var product = await _context.Products.Include(p => p.ProductFileImages).ThenInclude(pfi => pfi.FileImage)
-                .Include(p => p.Category).Where(p => p.Id == id).FirstOrDefaultAsync();
+            var product = await _context.Products.Include(p => p.Category).Where(p => p.Id == id).Select(p =>
+                new ProductVm
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Quantities = p.Quantities,
+                    Price = p.Price,
+                    CreatedDate = p.CreatedDate,
+                    UpdatedDate = p.UpdatedDate,
+                    CategoryName = p.Category.Name
+                }).FirstOrDefaultAsync();
+            var images = await _context.ProductFileImages.Where(p => p.ProductId == product.Id).Select(pfi => pfi.FileImage.FileLocation).ToListAsync();
+            product.ProductFileImages = images;
+            var rates = await _context.Rates.Where(r => r.ProductId == product.Id).Select(r => r.TotalRate).ToListAsync();
+            product.Rates = rates;
             return product;
         }
 

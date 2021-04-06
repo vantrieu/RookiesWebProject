@@ -15,11 +15,13 @@ namespace Web.Services
 
         Task<IEnumerable<ProductVm>> GetAllAsync();
 
-        Task<Product> GetByIdAsync(int id);
+        Task<ProductVm> GetByIdAsync(int id);
+
+        Task<Product> FindByIdAsync(int id);
 
         Task<IEnumerable<Product>> GetByNameAsync(string name);
 
-        Task<IEnumerable<Product>> GetByCategoryAsync(string categoryName);
+        Task<IEnumerable<ProductVm>> GetByCategoryAsync(string categoryName);
 
         Task<Product> UpdateAsync(int id, Product model);
 

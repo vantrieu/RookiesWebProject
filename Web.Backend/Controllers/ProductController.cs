@@ -148,7 +148,7 @@ namespace Web.Backend.Controllers
         [Authorize(Roles = "admin")]
         public async Task<ActionResult> Update(int id, [FromForm] ProductRequestVm model)
         {
-            var product = await _productRepository.GetByIdAsync(id);
+            var product = await _productRepository.FindByIdAsync(id);
             product.Name = model.Name;
             product.Description = model.Description;
             product.Quantities = model.Quantities;

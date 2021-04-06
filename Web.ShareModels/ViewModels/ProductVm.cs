@@ -35,7 +35,7 @@ namespace Web.ShareModels.ViewModels
             {
                 sum += rate;
             }
-            return (double)sum / Rates.Count;
+            return Math.Round((double)sum / Rates.Count, 1);
         }
 
         public string GetFirstImage()

@@ -24,10 +24,12 @@ namespace Web.CustomerSite.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var result = await _productApiClient.GetProductById(id);
-            foreach(var item in result.ProductFileImages)
+            List<string> temp = new List<string>();
+            foreach (string item in result.ProductFileImages)
             {
-                item.FileImage.FileLocation = _configuration["Domain:Default"] + item.FileImage.FileLocation;
+                temp.Add(_configuration["Domain:Default"] + item);
             }
+            result.ProductFileImages = temp;
             return View(result);
         }
 
@@ -36,10 +38,12 @@ namespace Web.CustomerSite.Controllers
             var results = await _productApiClient.GetProductByCategory(categoryName);
             foreach (var product in results)
             {
-                foreach (var item in product.ProductFileImages)
+                List<string> temp = new List<string>();
+                foreach (string item in product.ProductFileImages)
                 {
-                    item.FileImage.FileLocation = _configuration["Domain:Default"] + item.FileImage.FileLocation;
+                    temp.Add(_configuration["Domain:Default"] + item);
                 }
+                product.ProductFileImages = temp;
             }
             return View(results);
         }

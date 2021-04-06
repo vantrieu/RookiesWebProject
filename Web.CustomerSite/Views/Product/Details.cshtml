@@ -1,4 +1,4 @@
-﻿@model Web.ShareModels.Product
+﻿@model Web.ShareModels.ViewModels.ProductVm
 
 @using Microsoft.AspNetCore.Http
 @using Web.CustomerSite.Extentions
@@ -13,7 +13,7 @@
     <div class="p-5 border rounded">
         <div class="form-group row ">
             <div class="col-6" style="width:100%; text-align: center;">
-                <img class="img-responsive" style="width:340px; height:497px;" src="@Model.ProductFileImages.ElementAt(0).FileImage.FileLocation" />
+                <img class="img-responsive" style="width:340px; height:497px;" src="@Model.GetFirstImage()" />
             </div>
             <div class="col-6">
 
@@ -33,7 +33,24 @@
                     <span class="item-title">Mô tả: @Model.Description</span>
                 </p>
                 <p>
-                    <span class="item-title">Thể loại: @Model.Category.Name</span>
+                    <span class="item-title">Thể loại: @Model.CategoryName</span>
+                </p>
+                <p>
+                    <span class="item-title">
+                        Đánh giá: @for (int i = 0; i < Math.Floor(Model.RateAvg()); i++)
+                        {
+                            <i class="fas fa-star" style="color:yellow;"></i>
+                        }
+                        @if (Model.RateAvg() - Math.Floor(Model.RateAvg()) != 0)
+                        {
+                            <i class="fas fa-star-half-alt" style="color:yellow;"></i>
+                        }
+                        @for (int j = (int)Math.Ceiling(Model.RateAvg()); j < 5; j++)
+                        {
+                            <i class="far fa-star" style="color:yellow;"></i>
+                        }
+                        &nbsp; ( Có @Model.Rates.Count đánh giá )
+                    </span>
                 </p>
                 <p class="availability in-stock">
                     <span class="item-title">
@@ -81,7 +98,7 @@
             @foreach (var image in Model.ProductFileImages)
             {
                 <div class="col-4" style="width:100%; text-align: center;">
-                    <img class="img-responsive" style="width:340px; height:497px;" src="@image.FileImage.FileLocation" alt="@Model.Name" />
+                    <img class="img-responsive" style="width:340px; height:497px;" src="@image" alt="@Model.Name" />
                 </div>
             }
         </div>
