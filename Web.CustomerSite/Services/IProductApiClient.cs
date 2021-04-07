@@ -18,5 +18,7 @@ namespace Web.CustomerSite.Services
         Task<IList<ProductVm>> GetProductByArray(List<int> temp);
 
         Task<Rate> PostRating(int id, int rank);
+
+        Task<ProductVm> GetProductForRating(int id);
     }
 }

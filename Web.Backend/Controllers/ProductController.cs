@@ -213,5 +213,21 @@ namespace Web.Backend.Controllers
             }
             return NoContent();
         }
+
+        [HttpGet]
+        [Route("rate/{productId}")]
+        [Authorize]
+        public async Task<IActionResult> GetProductForRating(int productId)
+        {
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            string userId = claimsIdentity.FindFirst("sub").Value;
+            bool flag = await _productRepository.CheckBuyByUser(userId, productId);
+            if (flag)
+            {
+                var result = await _productRepository.GetByIdAsync(productId);
+                return Ok(result);
+            }
+            return NoContent();
+        }
     }
 }

@@ -74,6 +74,16 @@ namespace Web.CustomerSite.Services
             return await response.Content.ReadAsAsync<Rate>();
 
         }
+
+        public async Task<ProductVm> GetProductForRating(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var accessToken = await _tokenServices.RefreshTokenAsync();
+            client.UseBearerToken(accessToken);
+            var response = await client.GetAsync(_configuration["Domain:Default"] + "/api/v1/Product/rate/" + id);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsAsync<ProductVm>();
+        }
     }
 
 }

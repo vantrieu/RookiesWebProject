@@ -1,14 +1,5 @@
 ﻿@model Web.ShareModels.ViewModels.ProductVm
 
-@using Microsoft.AspNetCore.Http
-@using Web.CustomerSite.Extentions
-
-@inject IHttpContextAccessor HttpContextAccessor
-
-@{
-    ViewData["Title"] = "Details";
-}
-
 <form method="post">
     <div class="p-5 border rounded">
         <div class="form-group row ">
@@ -65,47 +56,17 @@
                 <div class="price-box">
                     <h3>@Model.Price.ToString().Insert(3, ".") VNĐ</h3>
                 </div>
+                <span class="star-rating star-5">
+                    <input type="radio" id="Rank" name="Rank" value="1"><i></i>
+                    <input type="radio" id="Rank" name="Rank" value="2"><i></i>
+                    <input type="radio" id="Rank" name="Rank" value="3"><i></i>
+                    <input type="radio" id="Rank" name="Rank" value="4"><i></i>
+                    <input type="radio" id="Rank" name="Rank" value="5"><i></i>
+                </span>
                 <div class="add-to-box">
-                    @{
-                        bool isInBag = false;
-                        List<int> lstCart = HttpContextAccessor.HttpContext.Session.Get<List<int>>("ssShoppingCart");
-                        if (lstCart != null && lstCart.Contains(Model.Id))
-                        {
-                            isInBag = true;
-                        }
-                    }
-                    @if (Model.Quantities != 0)
-                    {
-                        @if (isInBag)
-                        {
-                            <button type="submit" value="Remove from bag" asp-action="Remove" asp-route-name="@Model.GetNameUri()" asp-route-id="@Model.Id" class="btn btn-danger form-control">Xóa khỏi giỏ hàng</button>
-                        }
-                        else
-                        {
-                            <button type="submit" value="Add to bag" asp-route-id="@Model.Id" class="btn btn-primary form-control">Thêm vào giỏ hàng</button>
-                        }
-                    }
-                    else
-                    {
-                        <label class="btn btn-danger form-control">Đã hết hàng</label>
-                    }
+                    <button type="submit" value="Add to bag" asp-action="SetRating" asp-controller="Ratings" asp-route-id="@Model.Id" class="btn btn-primary form-control">Gửi đánh giá của bạn</button>
                 </div>
             </div>
         </div>
-        <hr />
-        <strong>Các hình ảnh khác của sản phẩm:</strong>
-        <div class="row" style="display: flex; flex-wrap: wrap; margin-top: 5px;">
-            @foreach (var image in Model.ProductFileImages)
-            {
-                <div class="col-4" style="width:100%; text-align: center;">
-                    <img class="img-responsive" style="width:340px; height:497px;" src="@image" alt="@Model.Name" />
-                </div>
-            }
-        </div>
     </div>
 </form>
-
-<div class="form-group">
-    <input hidden asp-for="@Model.Id" />
-    <a asp-controller="Home" asp-action="Index" class="btn btn-success">Quay về</a>
-</div>
