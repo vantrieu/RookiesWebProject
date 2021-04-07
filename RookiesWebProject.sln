@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.CustomerSite", "Web.Cus
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.ShareModels", "Web.ShareModels\Web.ShareModels.csproj", "{63260DDD-C256-4A43-8F64-354A206B0B6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Services", "Web.Services\Web.Services.csproj", "{FC02EA27-5B5F-4B48-8F43-36F7498288B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Services", "Web.Services\Web.Services.csproj", "{FC02EA27-5B5F-4B48-8F43-36F7498288B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.XUnitTest", "Web.XUnitTest\Web.XUnitTest.csproj", "{243A8AF9-C6D0-47FB-A993-3FDA1D7D168F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{FC02EA27-5B5F-4B48-8F43-36F7498288B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC02EA27-5B5F-4B48-8F43-36F7498288B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC02EA27-5B5F-4B48-8F43-36F7498288B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{243A8AF9-C6D0-47FB-A993-3FDA1D7D168F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{243A8AF9-C6D0-47FB-A993-3FDA1D7D168F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{243A8AF9-C6D0-47FB-A993-3FDA1D7D168F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{243A8AF9-C6D0-47FB-A993-3FDA1D7D168F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
