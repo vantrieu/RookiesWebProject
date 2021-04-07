@@ -12,10 +12,10 @@ namespace Web.CustomerSite.Controllers
         {
             _productApiClient = productApiClient;
         }
-        public async Task<IActionResult> SetRating(int Id, int rank)
+        public async Task<IActionResult> SetRating(int Id, int rank, string name)
         {
             await _productApiClient.PostRating(Id, rank);
-            return RedirectToAction("Details", "Product", new { id = Id });
+            return RedirectToAction("Details", "Product", new { name = name.Replace(" ", "-").ToString(), id = Id });
         }
     }
 }

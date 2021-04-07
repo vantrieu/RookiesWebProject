@@ -42,5 +42,10 @@ namespace Web.ShareModels.ViewModels
         {
             return ProductFileImages[0];
         }
+
+        public string GetNameUri()
+        {
+            return Name.Replace(" ", "-").ToString();
+        }
     }
 }

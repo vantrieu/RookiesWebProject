@@ -78,7 +78,7 @@
                     {
                         @if (isInBag)
                         {
-                            <button type="submit" value="Remove from bag" asp-action="Remove" asp-route-id="@Model.Id" class="btn btn-danger form-control">Xóa khỏi giỏ hàng</button>
+                            <button type="submit" value="Remove from bag" asp-action="Remove" asp-route-name="@Model.GetNameUri()" asp-route-id="@Model.Id" class="btn btn-danger form-control">Xóa khỏi giỏ hàng</button>
                         }
                         else
                         {
@@ -112,6 +112,7 @@
         @{ using (Html.BeginForm("SetRating", "Ratings"))
             {
                 @Html.HiddenFor(x => x.Id)
+                @Html.HiddenFor(x => x.Name)
                 <span class="star-rating star-5">
                     <input type="radio" id="Rank" name="Rank" value="1"><i></i>
                     <input type="radio" id="Rank" name="Rank" value="2"><i></i>

@@ -28,11 +28,11 @@
                             </div>
                             @if (product.Quantities != 0)
                             {
-                                <a style="width: 100%;" asp-action="Details" asp-controller="Product" class="btn btn-success" asp-route-id="@product.Id">Xem thêm</a>
+                                <a style="width: 100%;" asp-action="Details" asp-controller="Product" class="btn btn-success" asp-route-name="@product.GetNameUri()" asp-route-id="@product.Id">Xem thêm</a>
                             }
                             else
                             {
-                                <a style="width: 100%;" asp-action="Details" asp-controller="Product" class="btn btn-danger" asp-route-id="@product.Id">Hết hàng</a>
+                                <a style="width: 100%;" asp-action="Details" asp-controller="Product" class="btn btn-danger" asp-route-name="@product.GetNameUri()" asp-route-id="@product.Id">Hết hàng</a>
                             }
                         </div>
 
