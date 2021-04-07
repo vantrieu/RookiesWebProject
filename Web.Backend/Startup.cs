@@ -42,10 +42,16 @@ namespace Web.Backend
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IOrderDetailrepository, OrderDetailrepository>();
             services.AddTransient<IRateRepository, RateRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
 
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddDefaultIdentity<User>(options =>
+                {
+                    options.SignIn.RequireConfirmedAccount = false;
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(30);
+                    options.Lockout.MaxFailedAccessAttempts = 5;
+                })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
