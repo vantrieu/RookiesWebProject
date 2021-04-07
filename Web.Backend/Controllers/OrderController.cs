@@ -17,11 +17,13 @@ namespace Web.Backend.Controllers
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IOrderDetailrepository _orderDetailRepository;
+        private readonly IRateRepository _rateRepository;
 
-        public OrderController(IOrderRepository orderRepository, IOrderDetailrepository orderDetailRepository)
+        public OrderController(IOrderRepository orderRepository, IOrderDetailrepository orderDetailRepository, IRateRepository rateRepository)
         {
             _orderRepository = orderRepository;
             _orderDetailRepository = orderDetailRepository;
+            _rateRepository = rateRepository;
         }
 
         [HttpPost]
@@ -48,6 +50,8 @@ namespace Web.Backend.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteOrderItem(int orderId, int productId)
         {
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            string userId = claimsIdentity.FindFirst("sub").Value;
             var result = await _orderDetailRepository.DeleteAsync(orderId, productId);
             if (result == null)
                 return NotFound();
@@ -56,6 +60,7 @@ namespace Web.Backend.Controllers
                 if(!await _orderDetailRepository.OrderDetailExistsAsync(orderId))
                 {
                     await _orderRepository.DeleteMyOrder(orderId);
+                    await _rateRepository.DeleteRatingAsync(productId, userId);
                 }
                 return Ok();
             }

@@ -11,5 +11,7 @@ namespace Web.Services.Interfaces
         Task<Rate> CreateAsync(int productid, string userId, int totalStar);
 
         Task<double> GetAvgStarAsync(int productId);
+
+        Task<bool> DeleteRatingAsync(int productId, string userId);
     }
 }
