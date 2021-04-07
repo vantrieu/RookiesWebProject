@@ -59,12 +59,13 @@ namespace Web.Services.Repositories
             var orders = await (from od in _context.Orders
                                 join odd in _context.OrderDetails
                                 on od.Id equals odd.OrderId
+                                where od.UserId == userId
                                 select new OrderVm
                                 {
                                     orderId = od.Id,
                                     ProductId = odd.ProductId,
                                     Name = odd.Product.Name,
-                                    Price = odd.Product.Price,
+                                    Price = odd.Price,
                                     OrderDate = DateTimeOffset.Parse(od.OrderDate.ToString()),
                                     Status = od.status
                                 }).OrderBy(odv => odv.orderId).ToListAsync();

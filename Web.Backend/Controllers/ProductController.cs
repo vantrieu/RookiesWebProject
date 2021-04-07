@@ -211,7 +211,7 @@ namespace Web.Backend.Controllers
                 Rate rate = await _rateRepository.CreateAsync(productId, userId, totalStar);
                 return Ok(rate);
             }
-            return BadRequest();
+            return NoContent();
         }
     }
 }
