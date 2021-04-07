@@ -36,7 +36,6 @@ namespace Web.Backend.Services
                 file.CopyTo(fileStream);
                 return true;
             }
-            return false;
         }
     }
 }
