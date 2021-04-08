@@ -14,6 +14,8 @@ using Web.Services;
 using Web.Services.Interfaces;
 using Web.Services.Repositories;
 using Web.ShareModels;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.Reflection;
 
 namespace Web.Backend
 {
@@ -63,13 +65,43 @@ namespace Web.Backend
                 options.Events.RaiseSuccessEvents = true;
                 options.EmitStaticAudienceClaim = true;
             })
-               .AddInMemoryIdentityResources(IdentityServerConfig.IdentityResources)
-               .AddInMemoryApiScopes(IdentityServerConfig.ApiScopes)
-               .AddInMemoryClients(IdentityServerConfig.Clients)
-               .AddInMemoryPersistedGrants()
+               //.AddInMemoryIdentityResources(IdentityServerConfig.IdentityResources)
+               //.AddInMemoryApiScopes(IdentityServerConfig.ApiScopes)
+               //.AddInMemoryClients(IdentityServerConfig.Clients)
+               //.AddInMemoryPersistedGrants()
                .AddAspNetIdentity<User>()
                .AddProfileService<CustomProfileService>()
-               .AddDeveloperSigningCredential(); // not recommended for production - you need to store your key material somewhere secure
+               .AddDeveloperSigningCredential() // not recommended for production - you need to store your key material somewhere secure
+               .AddConfigurationStore(options =>
+               {
+                   options.ConfigureDbContext = builder =>
+                       builder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                           sql =>
+                           {
+                               if (!string.IsNullOrEmpty(typeof(Startup).GetTypeInfo().Assembly.GetName().Name))
+                               {
+                                   sql.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                               }
+                           });
+                   options.DefaultSchema = "idsv";
+               })
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = builder =>
+                        builder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                            sql =>
+                            {
+                                if (!string.IsNullOrEmpty(typeof(Startup).GetTypeInfo().Assembly.GetName().Name))
+                                {
+                                    sql.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
+                                }
+                            });
+                    options.DefaultSchema = "idsv";
+
+                    // this enables automatic token cleanup. this is optional.
+                    options.EnableTokenCleanup = true;
+                    options.TokenCleanupInterval = 30; // interval in seconds
+                });
 
             services.AddAuthentication()
                 .AddLocalApi("Bearer", option =>
@@ -120,6 +152,7 @@ namespace Web.Backend
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.MigrateIdServerDb();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
