@@ -82,31 +82,32 @@ namespace Web.Services.Repositories
 
         public async Task<IEnumerable<UserVm>> GetAllUserAsync()
         {
-            var users = await (from u in _context.Users
+            var userRoles = await (from u in _context.Users
                                join ur in _context.UserRoles on u.Id equals ur.UserId
                                join r in _context.Roles on ur.RoleId equals r.Id
-                               where r.Name == "user"
-                               select new UserVm
+                               select new
                                {
                                    UserId = u.Id,
                                    FullName = u.FullName,
                                    Email = u.Email,
                                    PhoneNumber = u.PhoneNumber,
-                                   LockoutEnd = u.LockoutEnd
-                               }).ToListAsync();
-            var admins = await (from u in _context.Users
-                                join ur in _context.UserRoles on u.Id equals ur.UserId
-                                join r in _context.Roles on ur.RoleId equals r.Id
-                                where r.Name == "admin"
-                                select new UserVm
-                                {
-                                    UserId = u.Id,
-                                    FullName = u.FullName,
-                                    Email = u.Email,
-                                    PhoneNumber = u.PhoneNumber,
-                                    LockoutEnd = u.LockoutEnd
-                                }).ToListAsync();
-            var results = users.Except(admins);
+                                   LockoutEnd = u.LockoutEnd,
+                                   RoleName = r.Name,
+                               }).ToArrayAsync();
+
+            var users = userRoles.GroupBy(x => x.UserId)
+                .Where(g => g.Any(x => x.RoleName == "user") && !g.Any(x => x.RoleName == "admin"))
+                .SelectMany(g => g.ToList())
+                .Select(u => new UserVm
+                {
+                    UserId = u.UserId,
+                    FullName = u.FullName,
+                    Email = u.Email,
+                    PhoneNumber = u.PhoneNumber,
+                    LockoutEnd = u.LockoutEnd,
+                });
+
+            var results = users;
             return results;
         }
 
