@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Web.CustomerSite.Models;
 using Web.CustomerSite.Services;
+using Web.ShareModels.ViewModels;
 
 namespace Web.CustomerSite.Controllers
 {
@@ -24,10 +25,12 @@ namespace Web.CustomerSite.Controllers
             _configuration = configuration;
         }
 
-        public async Task<IActionResult> Index()
+        [Route("")]
+        [Route("Home-pageNumber-{pageNumber}")]
+        public async Task<IActionResult> Index(int? pageNumber)
         {
-            var results = await _productApiClient.GetProduct();
-            foreach (var product in results)
+            ProductPaginationVm result = await _productApiClient.GetProduct(pageNumber);
+            foreach (var product in result.items)
             {
                 List<string> temp = new List<string>();
                 foreach (string item in product.ProductFileImages)
@@ -36,7 +39,7 @@ namespace Web.CustomerSite.Controllers
                 }
                 product.ProductFileImages = temp;
             }
-            return View(results);
+            return View(result);
         }
 
         public IActionResult Privacy()

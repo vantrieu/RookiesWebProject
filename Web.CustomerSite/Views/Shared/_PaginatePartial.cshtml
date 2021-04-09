@@ -1,0 +1,38 @@
+﻿@model Web.CustomerSite.Models.PaginateRouteVm
+
+<div style="display: flex; justify-content: center;">
+    <ul class="pagination">
+        @if (Model.previousPage == "Yes")
+        {
+            <li class="page-item">
+                <a asp-controller="@Model.ControllerName" asp-action="@Model.ActionName" asp-route-pageNumber="@(Model.currentPage - 1)" class="page-link">
+                    <i class="fas fa-backward"></i>
+                </a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <a asp-controller="@Model.ControllerName" asp-action="@Model.ActionName" asp-route-pageNumber="@(Model.currentPage - 1)" class="page-link">
+                    <i class="fas fa-backward"></i>
+                </a>
+            </li>
+        }
+        @if (Model.nextPage == "Yes")
+        {
+            <li class="page-item">
+                <a asp-controller="@Model.ControllerName" asp-action="@Model.ActionName" asp-route-pageNumber="@(Model.currentPage + 1)" class="page-link">
+                    <i class="fas fa-forward"></i>
+                </a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <a asp-controller="@Model.ControllerName" asp-action="@Model.ActionName" asp-route-pageNumber="@(Model.currentPage + 1)" class="page-link">
+                    <i class="fas fa-forward"></i>
+                </a>
+            </li>
+        }
+    </ul>
+</div>

@@ -1,11 +1,11 @@
-﻿@model IList<Web.ShareModels.ViewModels.ProductVm>
+﻿@model Web.ShareModels.ViewModels.ProductPaginationVm
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="row">
-    @foreach (var product in Model)
+    @foreach (var product in Model.items)
     {
         <div class="col-4">
             <div class="card mb-4">
@@ -41,3 +41,47 @@
         </div>
     }
 </div>
+
+@*<div style="display: flex; justify-content: center;">
+    <ul class="pagination">
+        @if (Model.previousPage == "Yes")
+        {
+            <li class="page-item">
+                <a asp-controller="Home" asp-action="index" asp-route-pageNumber="@(Model.currentPage - 1)" class="page-link">Previous</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <a asp-controller="Home" asp-action="index" asp-route-pageNumber="@(Model.currentPage - 1)" class="page-link">Previous</a>
+            </li>
+        }
+        @if (Model.nextPage == "Yes")
+        {
+            <li class="page-item">
+                <a asp-controller="Home" asp-action="index" asp-route-pageNumber="@(Model.currentPage + 1)" class="page-link">Next</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <a asp-controller="Home" asp-action="index" asp-route-pageNumber="@(Model.currentPage + 1)" class="page-link">Next</a>
+            </li>
+        }
+    </ul>
+</div>*@
+@{ 
+    PaginateRouteVm route = new PaginateRouteVm()
+    {
+        ControllerName = "Home",
+        ActionName = "index",
+        totalCount = Model.totalCount,
+        pageSize = Model.pageSize,
+        currentPage = Model.currentPage,
+        totalPages = Model.totalPages,
+        previousPage = Model.previousPage,
+        nextPage = Model.nextPage
+    };
+}
+
+<partial name="_PaginatePartial" model="route" />

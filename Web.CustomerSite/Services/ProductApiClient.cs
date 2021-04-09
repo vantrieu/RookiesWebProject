@@ -15,12 +15,13 @@ namespace Web.CustomerSite.Services
         {
             _requestServices = requestServices;
         }
-        public async Task<IList<ProductVm>> GetProduct()
+        public async Task<ProductPaginationVm> GetProduct(int? pageNumber)
         {
+            pageNumber = (pageNumber == null) ? 1 : pageNumber;
             var client = _requestServices.CreateRequest();
-            var response = await client.GetAsync("/api/v1/Product");
+            var response = await client.GetAsync("/api/v1/Product?pageNumber=" + pageNumber);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsAsync<IList<ProductVm>>();
+            return await response.Content.ReadAsAsync<ProductPaginationVm>();
         }
 
         public async Task<ProductVm> GetProductById(int id)

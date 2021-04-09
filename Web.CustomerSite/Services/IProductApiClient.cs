@@ -9,7 +9,7 @@ namespace Web.CustomerSite.Services
 {
     public interface IProductApiClient
     {
-        Task<IList<ProductVm>> GetProduct();
+        Task<ProductPaginationVm> GetProduct(int? pageNumber);
 
         Task<ProductVm> GetProductById(int id);
 

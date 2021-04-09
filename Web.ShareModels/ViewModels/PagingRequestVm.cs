@@ -10,7 +10,7 @@ namespace Web.ShareModels.ViewModels
 
         public int pageNumber { get; set; } = 1;
 
-        public int _pageSize { get; set; } = 10;
+        public int _pageSize { get; set; } = 3;
 
         public int pageSize
         {
