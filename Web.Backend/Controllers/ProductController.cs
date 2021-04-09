@@ -80,10 +80,10 @@ namespace Web.Backend.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] PagingRequestVm pagingRequestVm)
         {
-            var products = await _productRepository.GetAllAsync();
-            return Ok(products);
+            var result = await _productRepository.GetAllAsync(pagingRequestVm);
+            return Ok(result);
         }
 
         [HttpGet]

@@ -13,7 +13,7 @@ namespace Web.Services
 
         Task<Product> DeleteAsync(int id);
 
-        Task<IEnumerable<ProductVm>> GetAllAsync();
+        Task<ProductPaginationVm> GetAllAsync(PagingRequestVm pagingRequestVm);
 
         Task<ProductVm> GetByIdAsync(int id);
 

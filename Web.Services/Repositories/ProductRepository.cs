@@ -56,9 +56,9 @@ namespace Web.Services
             return product;
         }
 
-        public async Task<IEnumerable<ProductVm>> GetAllAsync()
+        public async Task<ProductPaginationVm> GetAllAsync(PagingRequestVm pagingRequestVm)
         {
-            var products = await _context.Products.Include(p => p.Category).Select(p =>
+            var source = _context.Products.Include(p => p.Category).Select(p =>
                 new ProductVm
                 {
                     Id = p.Id,
@@ -69,15 +69,44 @@ namespace Web.Services
                     CreatedDate = p.CreatedDate,
                     UpdatedDate = p.UpdatedDate,
                     CategoryName = p.Category.Name
-                }).ToListAsync();
-            foreach (var product in products)
+                }).AsQueryable();
+
+            int count = source.Count();
+
+            int CurrentPage = pagingRequestVm.pageNumber;
+
+            int PageSize = pagingRequestVm.pageSize;
+
+            int TotalCount = count;
+
+            int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+
+            var items = await source.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToListAsync();
+
+            foreach (var product in items)
             {
                 var images = await _context.ProductFileImages.Where(p => p.ProductId == product.Id).Select(pfi => pfi.FileImage.FileLocation).ToListAsync();
                 product.ProductFileImages = images;
                 var rates = await _context.Rates.Where(r => r.ProductId == product.Id).Select(r => r.TotalRate).ToListAsync();
                 product.Rates = rates;
             }
-            return products;
+
+            var previousPage = CurrentPage > 1 ? "Yes" : "No";
+
+            var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+
+            ProductPaginationVm result = new ProductPaginationVm
+            {
+                items = items,
+                totalCount = TotalCount,
+                pageSize = PageSize,
+                currentPage = CurrentPage,
+                totalPages = TotalPages,
+                previousPage = previousPage,
+                nextPage = nextPage
+            };
+
+            return result;
         }
 
         public async Task<IEnumerable<ProductVm>> GetByCategoryAsync(string categoryName)
