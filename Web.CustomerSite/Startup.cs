@@ -61,7 +61,7 @@ namespace Web.CustomerSite
             services.AddTransient<ICategoryApiClient, CategoryApiClient>();
             services.AddTransient<IProductApiClient, ProductApiClient>();
             services.AddTransient<IOrderApiClient, OrderApiClient>();
-            services.AddTransient<ITokenServices, TokenServices>();
+            services.AddTransient<IRequestServices, RequestServices>();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddControllersWithViews();

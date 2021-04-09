@@ -31,7 +31,7 @@ namespace Web.Backend.Controllers
         public async Task<IActionResult> Create(List<int> productIds)
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
-            string userId = claimsIdentity.Claims.ToList().ElementAt(5).Value;
+            string userId = claimsIdentity.FindFirst("sub").Value;
             await _orderRepository.CreateAsync(productIds, userId);
             return StatusCode(201);
         }

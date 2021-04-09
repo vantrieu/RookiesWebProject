@@ -8,19 +8,17 @@ namespace Web.CustomerSite.Services
 {
     public class CategoryApiClient : ICategoryApiClient
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IConfiguration _configuration;
+        private readonly IRequestServices _requestServices;
 
-        public CategoryApiClient(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        public CategoryApiClient(IRequestServices requestServices)
         {
-            _httpClientFactory = httpClientFactory;
-            _configuration = configuration;
+            _requestServices = requestServices;
         }
 
         public async Task<IList<Category>> GetCategory()
         {
-            var client = _httpClientFactory.CreateClient();
-            var response = await client.GetAsync(_configuration["Domain:Default"] + "/api/v1/Category");
+            var client = _requestServices.CreateRequest();
+            var response = await client.GetAsync("/api/v1/Category");
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsAsync<IList<Category>>();
         }

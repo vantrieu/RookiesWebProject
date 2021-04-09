@@ -1,10 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Web.CustomerSite.Extentions;
 using Web.ShareModels;
 using Web.ShareModels.ViewModels;
 
@@ -12,37 +9,32 @@ namespace Web.CustomerSite.Services
 {
     public class ProductApiClient : IProductApiClient
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IConfiguration _configuration;
-        private readonly ITokenServices _tokenServices;
+        private readonly IRequestServices _requestServices;
 
-        public ProductApiClient(IHttpClientFactory httpClientFactory, IConfiguration configuration, ITokenServices tokenServices)
+        public ProductApiClient(IRequestServices requestServices)
         {
-            _httpClientFactory = httpClientFactory;
-            _configuration = configuration;
-            _tokenServices = tokenServices;
+            _requestServices = requestServices;
         }
         public async Task<IList<ProductVm>> GetProduct()
         {
-            var client = _httpClientFactory.CreateClient();
-            var response = await client.GetAsync(_configuration["Domain:Default"]+"/api/v1/Product");
+            var client = _requestServices.CreateRequest();
+            var response = await client.GetAsync("/api/v1/Product");
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsAsync<IList<ProductVm>>();
         }
 
         public async Task<ProductVm> GetProductById(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var response = await client.GetAsync(_configuration["Domain:Default"] + "/api/v1/Product/" + id);
+            var client = _requestServices.CreateRequest();
+            var response = await client.GetAsync("/api/v1/Product/" + id);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsAsync<ProductVm>();
         }
 
         public async Task<IList<ProductVm>> GetProductByCategory(string categoryName)
         {
-            var client = _httpClientFactory.CreateClient();
-            string temp = _configuration["Domain:Default"] + "/api/v1/Product/category=" + categoryName;
-            var response = await client.GetAsync(temp);
+            var client = _requestServices.CreateRequest();
+            var response = await client.GetAsync("/api/v1/Product/category=" + categoryName);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsAsync<IList<ProductVm>>();
         }
@@ -50,13 +42,12 @@ namespace Web.CustomerSite.Services
         public async Task<IList<ProductVm>> GetProductByArray(List<int> temp)
         {
             List<ProductVm> lstProduct = new List<ProductVm>();
-            var client = _httpClientFactory.CreateClient();
+            var client = _requestServices.CreateRequest();
             if (temp == null)
                 return lstProduct;
             foreach (int id in temp)
             {
-                string result = _configuration["Domain:Default"] + "/api/v1/Product/" + id;
-                var response = await client.GetAsync(result);
+                var response = await client.GetAsync("/api/v1/Product/" + id);
                 response.EnsureSuccessStatusCode();
                 lstProduct.Add(await response.Content.ReadAsAsync<ProductVm>());
             }
@@ -65,11 +56,8 @@ namespace Web.CustomerSite.Services
 
         public async Task<Rate> PostRating(int id, int rank)
         {
-            var client = _httpClientFactory.CreateClient();
-            var accessToken = await _tokenServices.RefreshTokenAsync();
-            client.UseBearerToken(accessToken);
-            var response = await client.PostAsync(_configuration["Domain:Default"] + "/api/v1/Product/rate?productId="
-                + id + "&totalStar=" + rank, null);
+            var client = await _requestServices.CreateRequestWithAuth();
+            var response = await client.PostAsync("/api/v1/Product/rate?productId=" + id + "&totalStar=" + rank, null);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsAsync<Rate>();
 
@@ -77,10 +65,8 @@ namespace Web.CustomerSite.Services
 
         public async Task<ProductVm> GetProductForRating(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var accessToken = await _tokenServices.RefreshTokenAsync();
-            client.UseBearerToken(accessToken);
-            var response = await client.GetAsync(_configuration["Domain:Default"] + "/api/v1/Product/rate/" + id);
+            var client = await _requestServices.CreateRequestWithAuth();
+            var response = await client.GetAsync("/api/v1/Product/rate/" + id);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsAsync<ProductVm>();
         }

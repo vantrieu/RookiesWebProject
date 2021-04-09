@@ -2,33 +2,42 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System;
 using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Web.CustomerSite.Extentions;
 using Web.CustomerSite.Models;
 
 namespace Web.CustomerSite.Services
 {
-    public class TokenServices : ITokenServices
+    public class RequestServices : IRequestServices
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IConfiguration _configuration;
 
-        public TokenServices(IHttpContextAccessor httpContextAccessor, IHttpClientFactory httpClientFactory)
+        public RequestServices(IHttpContextAccessor httpContextAccessor, IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             _httpContextAccessor = httpContextAccessor;
             _httpClientFactory = httpClientFactory;
+            _configuration = configuration;
         }
-        public async Task<string> GetAccessTokenAsync()
+        public HttpClient CreateRequest()
         {
-            var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
-            return accessToken;
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["Domain:Default"]);
+            return client;
         }
 
-        public async Task<string> RefreshTokenAsync()
+        public async Task<HttpClient> CreateRequestWithAuth()
         {
+            var client = _httpClientFactory.CreateClient();
+
+            string backendUri = _configuration["Domain:Default"];
+
             var token = new TokenModel
             {
                 AccessToken = await _httpContextAccessor.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken),
@@ -36,13 +45,12 @@ namespace Web.CustomerSite.Services
                 ExpiresAt = DateTimeOffset.Parse(await _httpContextAccessor.HttpContext.GetTokenAsync("expires_at")),
             };
 
-
             if (token.TokenExpired)
             {
                 var httpClient = _httpClientFactory.CreateClient();
                 var metaDataResponse = await httpClient.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
                 {
-                    Address = "https://localhost:44314",
+                    Address = backendUri,
                     Policy = { RequireHttps = false },
                 });
 
@@ -55,10 +63,8 @@ namespace Web.CustomerSite.Services
                     RefreshToken = refreshToken,
                 });
 
-                if (tokenResponse.IsError)
-                {
+                if (tokenResponse.IsError) { }
 
-                }
                 var auth = await _httpContextAccessor.HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                 auth.Properties.UpdateTokenValue(OpenIdConnectParameterNames.AccessToken, tokenResponse.AccessToken);
                 auth.Properties.UpdateTokenValue(OpenIdConnectParameterNames.RefreshToken, tokenResponse.RefreshToken);
@@ -67,7 +73,10 @@ namespace Web.CustomerSite.Services
                 await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, auth.Principal, auth.Properties);
             }
             var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
-            return accessToken;
+
+            client.BaseAddress = new Uri(backendUri);
+            client.UseBearerToken(accessToken);
+            return client;
         }
     }
 }
