@@ -23,5 +23,30 @@ namespace Web.CustomerSite.Models
         public string previousPage { get; set; }
 
         public string nextPage { get; set; }
+
+        public string GetNextPage()
+        {
+            return (currentPage == totalPages) ? null : (currentPage + 1).ToString();
+        }
+
+        public string GetPreviousPage()
+        {
+            return (currentPage == 1) ? null : (currentPage - 1).ToString();
+        }
+
+        public string GetFisrtPreviousPage()
+        {
+            return (totalPages - 1).ToString();
+        }
+
+        public string GetSecondPreviousPage()
+        {
+            return (totalPages - 2).ToString();
+        }
+
+        public string GetCurrentPerTotalPage()
+        {
+            return "Trang " + currentPage + " trong tổng " + totalPages + " trang";
+        }
     }
 }
