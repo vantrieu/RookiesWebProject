@@ -11,10 +11,10 @@ function App() {
       <Router>
         <Switch>
           <PrivateRoute>
-            <AccountRoute>
+            <AccountRoute  path='/login'>
               <Login />
             </AccountRoute>
-            <PrivateRoute>
+            <PrivateRoute  path='/'>
               <Admin />
             </PrivateRoute>
           </PrivateRoute>
