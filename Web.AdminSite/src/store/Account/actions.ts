@@ -16,7 +16,7 @@ export const login = (username: string, password: string, from: string) => {
         userService.login(username, password).then((res) => {
             dispatch({
                 type: LOGIN_SUCCESS,
-                payload: { token: res.items.accessToken}
+                payload: res
             });
             history.push(from);
         }, (error) => {

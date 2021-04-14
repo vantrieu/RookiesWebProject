@@ -11,7 +11,7 @@ export const AccountRoute = ({ children, ...rest }: RouteProps): JSX.Element => 
         <Route
           {...rest}
           render={() =>
-            account.token ? (
+            account.access_token ? (
               <Redirect to={{ pathname: '/admin/home' }} />
             ) : (
               <Login />

@@ -23,7 +23,9 @@ interface LoginRequest {
 interface LoginSuccess {
     type: typeof LOGIN_SUCCESS;
     payload: {
-        token: string;
+        access_token: string;
+        refresh_token: string;
+        expires_in: number;
     };
 }
 
@@ -42,7 +44,9 @@ export interface AccountState {
     user: AuthenticatedUser | null;
     loading: boolean;
     error: string | null;
-    token: string | null;    
+    access_token: string | null;
+    refresh_token: string | null;
+    expires_in: number | 0;    
 }
 
 export type AccountActionTypes = 

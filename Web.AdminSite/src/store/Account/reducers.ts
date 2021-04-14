@@ -4,7 +4,9 @@ const initialState: AccountState = {
     user: null,
     loading: false,
     error: null,
-    token: null
+    access_token: null,
+    refresh_token: null,
+    expires_in: 0
 }
 
 const accountReducer = (
@@ -22,7 +24,9 @@ const accountReducer = (
             return {
                 ...state,
                 loading: false,
-                token: action.payload.token
+                access_token: action.payload.access_token,
+                refresh_token: action.payload.refresh_token,
+                expires_in: action.payload.expires_in
             };
         }
         case LOGIN_FAILURE: {
@@ -37,7 +41,9 @@ const accountReducer = (
                 ...state,
                 user: null,
                 error: null,
-                token: null
+                access_token: null,
+                refresh_token: null,
+                expires_in: 0
             }
         }
         default:
