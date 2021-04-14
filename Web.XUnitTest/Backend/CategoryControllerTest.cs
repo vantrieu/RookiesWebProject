@@ -122,5 +122,45 @@ namespace Web.XUnitTest.Backend
             var value = actionResult.Value as Category;
             Assert.Equal(category, value);
         }
+
+        [Fact]
+        public async Task Update_return_one_categoriesAsync()
+        {
+            var mockCategoryRepo = new Mock<ICategoryRepository>();
+
+            Category category = new Category { Id = 5, Name = "MŨ", Description = "Chỉ dành cho nữ" };
+
+            mockCategoryRepo.Setup(mcp => mcp.UpdateAsync(5, category)).ReturnsAsync(category);
+
+            var controller = new CategoryController(mockCategoryRepo.Object);
+
+            var result = await controller.Edit(5, category);
+
+            Assert.NotNull(result);
+            var actionResult = Assert.IsType<OkObjectResult>(result);
+            Assert.NotNull(actionResult);
+            var value = actionResult.Value as Category;
+            Assert.True(category.Id == value.Id);
+        }
+
+        [Fact]
+        public async Task Delete_return_one_categoriesAsync()
+        {
+            var mockCategoryRepo = new Mock<ICategoryRepository>();
+
+            Category category = new Category { Id = 5, Name = "MŨ", Description = "Chỉ dành cho nữ" };
+
+            mockCategoryRepo.Setup(mcp => mcp.DeleteAsync(5)).ReturnsAsync(category);
+
+            var controller = new CategoryController(mockCategoryRepo.Object);
+
+            var result = await controller.Delete(5);
+
+            Assert.NotNull(result);
+            var actionResult = Assert.IsType<OkObjectResult>(result);
+            Assert.NotNull(actionResult);
+            var value = actionResult.Value as Category;
+            Assert.True(category == value);
+        }
     }
 }
