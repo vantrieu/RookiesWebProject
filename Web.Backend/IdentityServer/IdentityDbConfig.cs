@@ -49,13 +49,35 @@ namespace Microsoft.Extensions.DependencyInjection
                         PostLogoutRedirectUris = { "https://localhost:44325/signout-callback-oidc" },
 
                         AllowedScopes = new List<string>
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        "rookieshop.api"
-                    },
+                        {
+                            IdentityServerConstants.StandardScopes.OpenId,
+                            IdentityServerConstants.StandardScopes.Profile,
+                            "rookieshop.api"
+                        },
 
                         AccessTokenLifetime = 90,
+                        AllowOfflineAccess = true,
+
+                    });
+                }
+
+                if (!context.Clients.Any(x => x.ClientId == "react"))
+                {
+                    clients.Add(new Client
+                    {
+                        ClientId = "react",
+                        ClientSecrets = { new Secret("secret".Sha256()) },
+
+                        AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+
+                        AllowedScopes = new List<string>
+                        {
+                            IdentityServerConstants.StandardScopes.OpenId,
+                            IdentityServerConstants.StandardScopes.Profile,
+                            "rookieshop.api"
+                        },
+
+                        // AccessTokenLifetime = 90,
                         AllowOfflineAccess = true,
 
                     });
@@ -77,11 +99,11 @@ namespace Microsoft.Extensions.DependencyInjection
                         AllowedCorsOrigins = { $"https://localhost:44314" },
 
                         AllowedScopes = new List<string>
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        "rookieshop.api"
-                    }
+                        {
+                            IdentityServerConstants.StandardScopes.OpenId,
+                            IdentityServerConstants.StandardScopes.Profile,
+                            "rookieshop.api"
+                        }
                     });
                 }
 
