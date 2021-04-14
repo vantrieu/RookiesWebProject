@@ -1,6 +1,6 @@
-import API from '../utils/API';
+import { api } from '../helpers';
 
-const login = (username: string, password: string) => {
+const login = async (username: string, password: string): Promise<any> => {
     var urlencoded = new URLSearchParams();
     urlencoded.append("grant_type", "password");
     urlencoded.append("username", username);
@@ -8,8 +8,7 @@ const login = (username: string, password: string) => {
     urlencoded.append("client_id", "react");
     urlencoded.append("client_secret", "secret");
 
-    console.log(API)
-    return API.post('/connect/token', urlencoded)
+    return await api.post('/connect/token', urlencoded)
         .then(response => {
             sessionStorage.setItem('user', JSON.stringify(response.data));
             return response.data;
@@ -19,11 +18,18 @@ const login = (username: string, password: string) => {
         })
 }
 
+const getCurrentLoginUser = async (): Promise<any> => {
+    return await api.get<any>('/api/v1/User/info').then((response) => {
+      return response.data;
+    });
+}
+
 const logout = () => {
     sessionStorage.removeItem('user');
 }
 
 export const userService = {
     login,
-    logout
+    logout,
+    getCurrentLoginUser
 }

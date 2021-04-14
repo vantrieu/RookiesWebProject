@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Web.Services.Interfaces;
 
@@ -45,6 +46,16 @@ namespace Web.Backend.Controllers
         {
             var results = await _userRepository.GetAllSuperAdminAsync();
             return Ok(results);
+        }
+
+        [HttpGet]
+        [Route("info")]
+        public async Task<IActionResult> GetUserProfile()
+        {
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            string userId = claimsIdentity.FindFirst("sub").Value;
+            var result = await _userRepository.GetUserById(userId);
+            return Ok(result);
         }
     }
 }
