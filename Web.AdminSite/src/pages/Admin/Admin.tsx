@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Fragment } from "react";
 
 export const Admin = () => {
@@ -254,7 +255,7 @@ export const Admin = () => {
                             <li className="nav-item dropdown no-arrow">
                                 <a className="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span className="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                    <img className="img-profile rounded-circle" src="img/undraw_profile.svg" />
+                                    <img className="img-profile rounded-circle" src="img/undraw_profile.svg" alt="" />
                                 </a>
                                 {/* Dropdown - User Information */}
                                 <div className="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -545,10 +546,10 @@ export const Admin = () => {
                                         <div className="text-center">
                                             <img className="img-fluid px-3 px-sm-4 mt-3 mb-4" style={{ width: '25rem' }} src="img/undraw_posting_photo.svg" alt="" />
                                         </div>
-                                        <p>Add some quality, svg illustrations to your project courtesy of <a target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
+                                        <p>Add some quality, svg illustrations to your project courtesy of <a rel="nofollow" href="https://undraw.co/">unDraw</a>, a
                   constantly updated collection of beautiful svg images that you can use
                   completely free and without attribution!</p>
-                                        <a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations on
+                                        <a rel="nofollow" href="https://undraw.co/">Browse Illustrations on
                   unDraw →</a>
                                     </div>
                                 </div>

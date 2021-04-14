@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "@types/axios": "^0.14.0",
     "@types/redux-persist": "^4.3.1",
+    "axios": "^0.21.1",
     "redux-persist": "^6.0.0"
   }
 }
