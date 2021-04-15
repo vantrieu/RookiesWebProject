@@ -59,7 +59,7 @@ namespace Web.Backend
             services.AddDefaultIdentity<User>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = false;
-                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(30);
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromDays(365);
                     options.Lockout.MaxFailedAccessAttempts = 5;
                 })
                 .AddRoles<IdentityRole>()
