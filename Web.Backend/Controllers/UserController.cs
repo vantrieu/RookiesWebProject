@@ -78,6 +78,7 @@ namespace Web.Backend.Controllers
 
         [HttpPost]
         [Route("lock/{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> LockUserById(string id)
         {
             try
@@ -86,7 +87,13 @@ namespace Web.Backend.Controllers
                 await _userManager.SetLockoutEnabledAsync(user, true);
                 var lockTime = DateTime.Today.AddDays(365);
                 await _userManager.SetLockoutEndDateAsync(user, lockTime);
-                return Ok();
+                return Ok(new UserReponseVM { 
+                    UserId = user.Id,  
+                    FullName = user.FullName,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    LockoutEnd = true
+                });
             }
             catch
             {
@@ -97,6 +104,7 @@ namespace Web.Backend.Controllers
 
         [HttpPost]
         [Route("unlock/{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> UnLockUserById(string id)
         {
             try
@@ -104,13 +112,31 @@ namespace Web.Backend.Controllers
                 var user = await _userManager.FindByIdAsync(id);
                 await _userManager.SetLockoutEnabledAsync(user, false);
                 await _userManager.SetLockoutEndDateAsync(user, DateTime.Today - TimeSpan.FromDays(1));
-                return Ok();
+                return Ok(new UserReponseVM
+                {
+                    UserId = user.Id,
+                    FullName = user.FullName,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    LockoutEnd = false
+                });
             }
             catch
             {
                 return NoContent();
             }
 
+        }
+
+        [HttpGet]
+        [Route("roles")]
+        public IActionResult CheckRolesAdmin()
+        {
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            List<string> roles = claimsIdentity.FindAll("role").Select(c => c.Value).ToList();
+            if(roles.Contains("admin"))
+                return Ok();
+            return NoContent();
         }
     }
 }

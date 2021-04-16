@@ -20,7 +20,31 @@ const login = async (username: string, password: string): Promise<any> => {
 
 const getCurrentLoginUser = async (): Promise<any> => {
     return await api.get<any>('/api/v1/User/info').then((response) => {
-      return response.data;
+        return response.data;
+    });
+}
+
+const getListUser = async (): Promise<any> => {
+    return await api.get<any>('/api/v1/User/user').then((response) => {
+        return response.data;
+    });
+}
+
+const lockUserById = async (id: string): Promise<any> => {
+    return await api.post<any>(`/api/v1/User/lock/${id}`).then((response) => {
+        return response.data;
+    });
+}
+
+const unLockUserById = async (id: string): Promise<any> => {
+    return await api.post<any>(`/api/v1/User/unlock/${id}`).then((response) => {
+        return response.data;
+    });
+}
+
+const CheckRole = async (): Promise<any> =>{
+    return await api.get<any>('/api/v1/User/roles').then((respone) => {
+        return respone.status;
     });
 }
 
@@ -31,5 +55,9 @@ const logout = () => {
 export const userService = {
     login,
     logout,
-    getCurrentLoginUser
+    getCurrentLoginUser,
+    getListUser,
+    lockUserById,
+    unLockUserById,
+    CheckRole
 }

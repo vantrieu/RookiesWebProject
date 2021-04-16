@@ -1,23 +1,31 @@
-import { Fragment, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getCurrentLoginUser } from '../../store/Account/actions';
 import LeftMenu from './LeftMenu';
 import TopNavBar from './TopNavBar';
+import { BrowserRouter, Route } from 'react-router-dom';
+import Home from './Home';
+import Users from './Users';
 
 export const Admin = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getCurrentLoginUser());
-    }, []);
-    
+    }, [dispatch]);
+
     return (
-        <Fragment>
+        <BrowserRouter>
             <LeftMenu />
             <div id="content-wrapper" className="d-flex flex-column">
                 <div id="content">
                     <TopNavBar />
                     <div className="container-fluid">
-                        <h1>Render SPA!</h1>
+                        <Route exact path='/'>
+                            <Home />
+                        </Route>
+                        <Route exact path='/users'>
+                            <Users />
+                        </Route>
                     </div>
                 </div>
                 <footer className="sticky-footer bg-white">
@@ -28,6 +36,6 @@ export const Admin = () => {
                     </div>
                 </footer>
             </div>
-        </Fragment>
+        </BrowserRouter>
     )
 }

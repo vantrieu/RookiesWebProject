@@ -4,6 +4,7 @@ import thunkMiddleware from "redux-thunk";
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { setAuthToken } from '../helpers';
+import { usersReducer } from './Users/reducers';
 
 const persistConfig = {
     key: 'root',
@@ -12,7 +13,8 @@ const persistConfig = {
 }
 
 const rootReducer = combineReducers({
-    account: accountReducer
+    account: accountReducer,
+    user: usersReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

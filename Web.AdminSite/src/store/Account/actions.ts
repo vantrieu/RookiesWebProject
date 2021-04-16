@@ -19,6 +19,13 @@ export const login = (username: string, password: string, from: string) => {
                 type: LOGIN_SUCCESS,
                 payload: response,
             });
+            const statusCode = await userService.CheckRole();
+            if (statusCode !== 200) {
+                dispatch({
+                    type: LOG_OUT
+                })
+                history.push('/');
+            }
             history.push(from);
         } catch (error) {
             dispatch({
