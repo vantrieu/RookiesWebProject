@@ -1,14 +1,16 @@
 import './styles/sb-admin-2.min.css';
-import { BrowserRouter as Router, Switch } from 'react-router-dom';
+import './assets/fontawesome-free/css/all.min.css';
+import { Router, Switch } from 'react-router-dom';
 import { PrivateRoute } from './components';
 import { Login } from './pages/Account';
 import { Admin } from './pages/Admin/Admin';
 import { AccountRoute } from './components/AccountRoute';
+import { history } from './helpers';
 
 function App() {
   return (
     <div className="App" id="wrapper">
-      <Router>
+      <Router history={history}>
         <Switch>
           <PrivateRoute>
             <AccountRoute  path='/login'>

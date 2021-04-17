@@ -4,6 +4,7 @@ import { AppState } from '../../store';
 import { ProductsState } from '../../store/Products/types';
 import { loadProduct } from '../../store/Products/actions';
 import env from 'react-dotenv';
+import { Link } from 'react-router-dom';
 
 const Products = () => {
     const products = useSelector<AppState>((state) => state.products) as ProductsState;
@@ -18,7 +19,10 @@ const Products = () => {
                     <h2 className="text-info">Danh sách sản phẩm</h2>
                 </div>
                 <div className="col-6 text-right">
-                    <button className="btn btn-success"><i className="fas fa-plus" />&nbsp; Thêm sản phẩm mới</button>
+                    <Link className="btn btn-success" to='/add-product'>
+                        <i className="fas fa-plus" />
+                        &nbsp; Thêm sản phẩm mới
+                    </Link>
                 </div>
             </div>
             <div className="card-body">

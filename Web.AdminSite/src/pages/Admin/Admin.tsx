@@ -7,6 +7,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import Home from './Home';
 import Users from './Users';
 import Products from './Products';
+import AddProduct from './AddProduct';
 
 export const Admin = () => {
     const dispatch = useDispatch();
@@ -29,6 +30,9 @@ export const Admin = () => {
                         </Route>
                         <Route exact path='/products'>
                             <Products />
+                        </Route>
+                        <Route exact path='/add-product'>
+                            <AddProduct />
                         </Route>
                     </div>
                 </div>
