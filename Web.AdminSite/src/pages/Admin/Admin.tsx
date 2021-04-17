@@ -6,6 +6,7 @@ import TopNavBar from './TopNavBar';
 import { BrowserRouter, Route } from 'react-router-dom';
 import Home from './Home';
 import Users from './Users';
+import Products from './Products';
 
 export const Admin = () => {
     const dispatch = useDispatch();
@@ -25,6 +26,9 @@ export const Admin = () => {
                         </Route>
                         <Route exact path='/users'>
                             <Users />
+                        </Route>
+                        <Route exact path='/products'>
+                            <Products />
                         </Route>
                     </div>
                 </div>

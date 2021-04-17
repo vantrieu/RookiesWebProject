@@ -22,10 +22,10 @@ const LeftMenu = () => {
                 </Link>
             </li>
             <li className="nav-item">
-                <a className="nav-link" href="tables.html">
+                <Link className="nav-link" to='/products'>
                     <i className="fas fa-fw fa-table" />
-                    <span>Tables</span>
-                </a>
+                    <span>Sản phẩm</span>
+                </Link>
             </li>
             <hr className="sidebar-divider d-none d-md-block" />
             <div className="text-center d-none d-md-inline">
