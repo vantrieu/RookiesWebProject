@@ -5,13 +5,20 @@ import { ProductsState } from '../../store/Products/types';
 import { loadProduct } from '../../store/Products/actions';
 import env from 'react-dotenv';
 import { Link } from 'react-router-dom';
+import Pagination from "react-js-pagination";
 
 const Products = () => {
     const products = useSelector<AppState>((state) => state.products) as ProductsState;
     const dispatch = useDispatch();
+
     useEffect(() => {
-        dispatch(loadProduct(1));
+        dispatch(loadProduct(1, 6));
     }, [dispatch])
+
+    const handlePageChange = (pageNumber: number) => {
+        dispatch(loadProduct(pageNumber, 6));
+    }
+
     return (
         <Fragment>
             <div className="row">
@@ -52,14 +59,31 @@ const Products = () => {
                                         <td>{product.createdDate}</td>
                                         <td>{product.updatedDate}</td>
                                         <td>
-                                            <button className="btn btn-success mr-1">Cập nhật</button>
-                                            <button className="btn btn-danger ml-1">Xóa</button>
+                                            <button className="btn btn-success mr-1">
+                                                <i className="fas fa-edit" />
+                                                &nbsp; Cập nhật
+                                            </button>
+                                            <button className="btn btn-danger ml-1">
+                                                <i className="far fa-trash-alt" />
+                                                &nbsp; Xóa
+                                            </button>
                                         </td>
                                     </tr>
                                 )
                             })}
                         </tbody>
                     </table>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Pagination
+                        itemClass="page-item"
+                        linkClass="page-link"
+                        activePage={products.currentPage}
+                        itemsCountPerPage={products.pageSize}
+                        totalItemsCount={products.totalCount}
+                        pageRangeDisplayed={5}
+                        onChange={handlePageChange}
+                    />
                 </div>
             </div>
         </Fragment>

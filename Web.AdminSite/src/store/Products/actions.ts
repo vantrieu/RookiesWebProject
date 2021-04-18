@@ -7,7 +7,7 @@ import {
 } from './types';
 import { Dispatch } from "react";
 
-export const loadProduct = (pageNumber: number | null) => {
+export const loadProduct = (pageNumber: number, pageSize: number) => {
     return async (dispatch: Dispatch<ProductsActionTypes>) => {
         dispatch({
             type: LOAD_PRODUCTS_REQUEST,
@@ -16,7 +16,7 @@ export const loadProduct = (pageNumber: number | null) => {
             }
         });
         try {
-            const response = await productService.GetProducts(pageNumber);
+            const response = await productService.GetProducts(pageNumber, pageSize);
             dispatch({
                 type: LOAD_PRODUCTS_SUCCESS,
                 payload: {
