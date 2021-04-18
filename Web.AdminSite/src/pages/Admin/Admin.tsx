@@ -8,6 +8,7 @@ import Home from './Home';
 import Users from './Users';
 import Products from './Products';
 import AddProduct from './AddProduct';
+import EditProduct from './EditProduct';
 
 export const Admin = () => {
     const dispatch = useDispatch();
@@ -33,6 +34,8 @@ export const Admin = () => {
                         </Route>
                         <Route exact path='/add-product'>
                             <AddProduct />
+                        </Route>
+                        <Route exact path='/product/:id' component={EditProduct}>
                         </Route>
                     </div>
                 </div>

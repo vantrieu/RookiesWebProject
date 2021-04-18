@@ -1,29 +1,48 @@
-import React, { ChangeEvent, FormEvent, Fragment, useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { history } from '../../helpers';
 import { AppState } from '../../store';
 import { loadCategories } from '../../store/Categories/actions';
 import { Category } from '../../store/Categories/types';
-import { productService } from './../../services/product.service'
+import { loadProductById } from '../../store/Products/actions';
+import { Product } from '../../store/Products/types';
+import { history } from '../../helpers';
+import env from 'react-dotenv';
+import { productService } from '../../services/product.service';
 
-const AddProduct = () => {
-    const categories = useSelector<AppState>((state) => state.categories.categories) as Array<Category>;
+const EditProduct = (props: any) => {
+    const id = props.match.params.id;
     const dispatch = useDispatch();
-    const [formSubmitted, setFormSubmitted] = useState(false);
     const [selectImages, setSelectimages] = useState(Array<string>());
     const [formData, setFormData] = useState(new FormData());
+    const categories = useSelector<AppState>((state) => state.categories.categories) as Array<Category>;
+    const product = useSelector<AppState>((state) => state.product.item) as Product;
+
+    const getCategoryId = () => {
+        var temp = categories.find(c => c.name === product.categoryName);
+        return temp ? temp.id : '';
+    };
+
     const [formInput, setFormInput] = useState({
-        name: '',
-        description: '',
-        quantities: 0,
-        price: 0,
-        categoryId: ''
+        name: product.name,
+        description: product.description,
+        quantities: product.quantities,
+        price: product.price,
+        categoryId: getCategoryId()
     });
 
     useEffect(() => {
-        dispatch(loadCategories())
-    }, [dispatch]);
+        dispatch(loadProductById(id));
+        dispatch(loadCategories());
+        var temp = Array<string>();
+        if(product.productFileImages){
+            product?.productFileImages.map((image) => {
+                return temp.push(`${env.API_URL}${image}`)
+            })
+        }
+        setSelectimages(temp);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id, dispatch])
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -54,7 +73,7 @@ const AddProduct = () => {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setFormSubmitted(true);
+        console.log(formInput)
         if (name && description && price && quantities && categoryId) {
             const formDataSubmit = formData;
             formDataSubmit.append('name', formInput.name);
@@ -62,7 +81,7 @@ const AddProduct = () => {
             formDataSubmit.append('price', formInput.price.toString());
             formDataSubmit.append('quantities', formInput.quantities.toString());
             formDataSubmit.append('categoryId', formInput.categoryId.toString());
-            await productService.CreateProduct(formData);
+            await productService.UpdateProductById(id, formDataSubmit);
             history.goBack()
         }
 
@@ -70,7 +89,9 @@ const AddProduct = () => {
 
     const renderOption = () => {
         return categories.map((item, index) => {
-            return <option key={index} value={item.id}>{item.name}</option>
+            return (item.name === product.categoryName) ?
+                (<option key={index} value={item.id} selected={true}>{item.name}</option>) :
+                (<option key={index} value={item.id}>{item.name}</option>)
         })
     }
 
@@ -83,31 +104,31 @@ const AddProduct = () => {
                     <form onSubmit={handleSubmit}>
                         <div className='form-group'>
                             <label>Tên sản phẩm</label>
-                            <input type='text' className="form-control" onChange={handleChange} name='name' placeholder='Nhập tên sản phẩm...' />
+                            <input type='text' className="form-control" onChange={handleChange} name='name' defaultValue={product.name} placeholder='Nhập tên sản phẩm...' />
                         </div>
                         <div className='form-group'>
                             <label>Mô tả</label>
-                            <input className="form-control" onChange={handleChange} name='description' />
+                            <input className="form-control" onChange={handleChange} defaultValue={product.description} name='description' />
                         </div>
                         <div className='form-group row'>
                             <div className='form-group col'>
                                 <label>Số lượng</label>
-                                <input type='number' className="form-control" onChange={handleChange} name='quantities' />
+                                <input type='number' onChange={handleChange} defaultValue={product.quantities} className="form-control" name='quantities' />
                             </div>
                             <div className='form-group col'>
                                 <label>Giá</label>
-                                <input type='number' className="form-control" onChange={handleChange} name='price' />
+                                <input type='number' onChange={handleChange} defaultValue={product.price} className="form-control" name='price' />
                             </div>
                             <div className='form-group col'>
                                 <label>Loại</label>
-                                <select className='col bodered' style={{ height: '50%' }} name="categoryId" onChange={selectHandleChange}>
+                                <select className='col' style={{ height: '50%' }} name="categoryId"  onChange={selectHandleChange}>
                                     {renderOption()}
                                 </select>
                             </div>
                         </div>
                         <div className='form-group'>
                             <label>Hình ảnh sản phẩm</label>
-                            <input type='file' multiple className="form-control" onChange={imageHandleChange} />
+                            <input type='file' multiple className="form-control" onChange={imageHandleChange}  />
                         </div>
                         <div className='form-group row' style={{ justifyContent: 'center' }}>
                             {selectImages.map((item, index) => {
@@ -133,4 +154,4 @@ const AddProduct = () => {
     )
 }
 
-export default AddProduct;
+export default EditProduct;

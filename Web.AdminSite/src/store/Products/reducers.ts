@@ -3,8 +3,14 @@ import {
     LOAD_PRODUCTS_REQUEST,
     LOAD_PRODUCTS_SUCCESS,
     ProductsActionTypes,
-    ProductsState
+    ProductsState,
+    ProductState,
+    LOAD_PRODUCT_REQUEST,
+    ProductActionTypes,
+    LOAD_PRODUCT_SUCCESS,
+    LOAD_PRODUCT_FAILURE
 } from './types';
+
 const initialState: ProductsState = {
     items: [],
     totalCount: 0,
@@ -54,4 +60,41 @@ const productsReducer = (
     }
 }
 
-export { productsReducer };
+const initialProductState: ProductState = {
+    item: {},
+    loading: false,
+    error: null
+}
+
+const productReducer = (
+    state: ProductState = initialProductState,
+    action: ProductActionTypes
+): ProductState => {
+    switch (action.type) {
+        case LOAD_PRODUCT_REQUEST: {
+            return {
+                ...state,
+                loading: true
+            };
+        }
+        case LOAD_PRODUCT_SUCCESS: {
+            return {
+                ...state,
+                item: action.payload.item,
+                loading: false,
+                error: null
+            };
+        }
+        case LOAD_PRODUCT_FAILURE: {
+            return {
+                ...state,
+                loading: false,
+                error: action.payload.error
+            };
+        }
+        default:
+            return {...state};
+    }
+}
+
+export { productsReducer, productReducer};

@@ -59,10 +59,10 @@ const Products = () => {
                                         <td>{product.createdDate}</td>
                                         <td>{product.updatedDate}</td>
                                         <td>
-                                            <button className="btn btn-success mr-1">
+                                            <Link className="btn btn-success mr-1" to={'/product/'+product.id.toString()}>
                                                 <i className="fas fa-edit" />
                                                 &nbsp; Cập nhật
-                                            </button>
+                                            </Link>
                                             <button className="btn btn-danger ml-1">
                                                 <i className="far fa-trash-alt" />
                                                 &nbsp; Xóa
