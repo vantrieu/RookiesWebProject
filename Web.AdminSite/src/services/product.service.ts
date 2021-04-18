@@ -7,6 +7,13 @@ const GetProducts = async (pageNumber: number | null): Promise<any> => {
     });
 }
 
+const CreateProduct = async (data: FormData): Promise<any> => {
+    return await api.post<any>('/api/v1/Product', data).then((response) => {
+        return response.data;
+    });
+}
+
 export const productService = {
-    GetProducts
+    GetProducts,
+    CreateProduct
 }
