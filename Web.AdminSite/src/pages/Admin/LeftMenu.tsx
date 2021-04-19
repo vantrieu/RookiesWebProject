@@ -27,6 +27,12 @@ const LeftMenu = () => {
                     <span>Sản phẩm</span>
                 </Link>
             </li>
+            <li className="nav-item">
+                <Link className="nav-link" to='/categories'>
+                    <i className="fas fa-fw fa-table" />
+                    <span>Loại sản phẩm</span>
+                </Link>
+            </li>
             <hr className="sidebar-divider d-none d-md-block" />
             <div className="text-center d-none d-md-inline">
                 <button className="rounded-circle border-0" id="sidebarToggle" />

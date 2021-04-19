@@ -9,6 +9,7 @@ import Users from './Users';
 import Products from './Products';
 import AddProduct from './AddProduct';
 import EditProduct from './EditProduct';
+import Categories from './Categories';
 
 export const Admin = () => {
     const dispatch = useDispatch();
@@ -36,6 +37,9 @@ export const Admin = () => {
                             <AddProduct />
                         </Route>
                         <Route exact path='/product/:id' component={EditProduct}>
+                        </Route>
+                        <Route exact path='/categories'>
+                            <Categories />
                         </Route>
                     </div>
                 </div>
