@@ -6,6 +6,8 @@ export const LOAD_PRODUCT_REQUEST = 'LOAD_PRODUCT_REQUEST';
 export const LOAD_PRODUCT_SUCCESS = 'LOAD_PRODUCT_SUCCESS';
 export const LOAD_PRODUCT_FAILURE = 'LOAD_PRODUCT_FAILURE';
 
+export const DELETE_PRODUCT = 'DELETE_PRODUCT';
+
 export interface Product {
     id: number,
     name: string,
@@ -61,7 +63,15 @@ export interface LoadProductsFailure {
     }
 }
 
+export interface DeleteProduct {
+    type: typeof DELETE_PRODUCT,
+    payload: {
+        item: Product
+    }
+}
+
 export type ProductsActionTypes =
     | LoadProductsFailure
     | LoadProductsRequest
-    | LoadProductsSuccess;
+    | LoadProductsSuccess
+    | DeleteProduct;

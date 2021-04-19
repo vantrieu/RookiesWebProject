@@ -1,9 +1,10 @@
 import { productService } from './../../services/product.service';
-import { 
-    ProductsActionTypes, 
-    LOAD_PRODUCTS_REQUEST, 
+import {
+    ProductsActionTypes,
+    LOAD_PRODUCTS_REQUEST,
     LOAD_PRODUCTS_SUCCESS,
-    LOAD_PRODUCTS_FAILURE
+    LOAD_PRODUCTS_FAILURE,
+    DELETE_PRODUCT
 } from './types';
 import { Dispatch } from "react";
 
@@ -40,5 +41,17 @@ export const loadProduct = (pageNumber: number, pageSize: number) => {
                 }
             });
         }
+    }
+}
+
+export const deleteProduct = (id: number) => {
+    return async (dispatch: Dispatch<ProductsActionTypes>) => {
+        const response = await productService.DeleteProduct(id);
+        dispatch({
+            type: DELETE_PRODUCT,
+            payload: {
+                item: response
+            }
+        });
     }
 }

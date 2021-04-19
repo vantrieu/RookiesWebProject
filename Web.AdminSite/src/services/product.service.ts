@@ -18,8 +18,15 @@ const GetProductById = async (id: number): Promise<any> => {
     });
 }
 
-const UpdateProductById = async (id: number,data: FormData): Promise<any> => {
+const UpdateProductById = async (id: number, data: FormData): Promise<any> => {
     return await api.put<any>(`/api/v1/Product/${id}`, data).then((response) => {
+        console.log(response.status)
+        return response.data;
+    });
+}
+
+const DeleteProduct = async (id: number): Promise<any> => {
+    return await api.delete(`/api/v1/Product?id=${id}`).then((response) => {
         console.log(response.status)
         return response.data;
     });
@@ -29,5 +36,6 @@ export const productService = {
     GetProducts,
     CreateProduct,
     GetProductById,
-    UpdateProductById
+    UpdateProductById,
+    DeleteProduct
 }

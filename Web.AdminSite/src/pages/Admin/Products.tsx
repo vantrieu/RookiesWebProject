@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store';
 import { Product, ProductsState } from '../../store/Products/types';
-import { loadProduct } from '../../store/Products/actions';
+import { deleteProduct, loadProduct } from '../../store/Products/actions';
 import { Link } from 'react-router-dom';
 import Pagination from "react-js-pagination";
 import { confirmAlert } from 'react-confirm-alert'; // Import
@@ -27,11 +27,11 @@ const Products = () => {
           buttons: [
             {
               label: 'Xóa',
-              onClick: () => alert(`Click ${product.id}`)
+              onClick: () => dispatch(deleteProduct(product.id))
             },
             {
               label: 'Hủy',
-              onClick: () => alert('Click No')
+              onClick: () => {}
             }
           ]
         });

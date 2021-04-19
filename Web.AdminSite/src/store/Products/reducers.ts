@@ -1,9 +1,11 @@
 import {
+    DELETE_PRODUCT,
     LOAD_PRODUCTS_FAILURE,
     LOAD_PRODUCTS_REQUEST,
     LOAD_PRODUCTS_SUCCESS,
     ProductsActionTypes,
-    ProductsState
+    ProductsState,
+    Product
 } from './types';
 
 const initialState: ProductsState = {
@@ -16,6 +18,13 @@ const initialState: ProductsState = {
     nextPage: "No",
     loading: false,
     error: null
+}
+
+const RefreshItems = (productsState: ProductsState, product: Product) => {
+    const lstProduct = [...productsState.items];
+    const index = lstProduct?.findIndex(u => u.id === product.id);
+    lstProduct?.splice(index, 1);
+    return lstProduct;
 }
 
 const productsReducer = (
@@ -49,6 +58,12 @@ const productsReducer = (
                 loading: false,
                 error: action.payload.error
             };
+        }
+        case DELETE_PRODUCT: {
+            return {
+                ...state,
+                items: RefreshItems(state, action.payload.item)
+            }
         }
         default:
             return state;
