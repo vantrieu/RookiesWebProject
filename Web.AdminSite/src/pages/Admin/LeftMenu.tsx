@@ -33,6 +33,12 @@ const LeftMenu = () => {
                     <span>Loại sản phẩm</span>
                 </Link>
             </li>
+            <li className="nav-item">
+                <Link className="nav-link" to='/orders'>
+                    <i className="fas fa-fw fa-table" />
+                    <span>Đơn hàng</span>
+                </Link>
+            </li>
             <hr className="sidebar-divider d-none d-md-block" />
             <div className="text-center d-none d-md-inline">
                 <button className="rounded-circle border-0" id="sidebarToggle" />

@@ -12,6 +12,7 @@ import EditProduct from './EditProduct';
 import Categories from './Categories';
 import AddCategory from './AddCategory';
 import EditCategory from './EditCategory';
+import Orders from './Orders';
 
 export const Admin = () => {
     const dispatch = useDispatch();
@@ -47,6 +48,9 @@ export const Admin = () => {
                             <AddCategory />
                         </Route>
                         <Route exact path='/category/:id' component={EditCategory}>
+                        </Route>
+                        <Route exact path='/orders'>
+                            <Orders />
                         </Route>
                     </div>
                 </div>

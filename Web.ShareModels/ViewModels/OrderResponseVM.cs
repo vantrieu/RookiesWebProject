@@ -9,6 +9,8 @@ namespace Web.ShareModels.ViewModels
         public int orderId { get; set; }
 
         public string fullname { get; set; }
+
+        public string phoneNumber { get; set; }
         
         public DateTime orderDate { get; set; }
 

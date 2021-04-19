@@ -7,6 +7,7 @@ import storage from 'redux-persist/lib/storage';
 import { setAuthToken } from '../helpers';
 import { usersReducer } from './Users/reducers';
 import { categoriesReducer } from './Categories/reducers';
+import { ordersReducer } from './Orders/reducers';
 
 const persistConfig = {
     key: 'root',
@@ -15,7 +16,8 @@ const persistConfig = {
       'account',
       'user', 
       'products',
-      'categories'
+      'categories',
+      'orders'
     ]
 }
 
@@ -23,7 +25,8 @@ const rootReducer = combineReducers({
     account: accountReducer,
     user: usersReducer,
     products: productsReducer,
-    categories: categoriesReducer
+    categories: categoriesReducer,
+    orders: ordersReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

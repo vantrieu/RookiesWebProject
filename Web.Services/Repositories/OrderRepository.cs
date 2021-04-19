@@ -71,6 +71,7 @@ namespace Web.Services.Repositories
                 orderId = o.Id,
                 orderDate = o.OrderDate,
                 fullname = o.User.FullName,
+                phoneNumber = o.User.PhoneNumber,
                 status = o.status
             }).ToListAsync();
 
