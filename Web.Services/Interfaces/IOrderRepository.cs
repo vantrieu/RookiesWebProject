@@ -13,5 +13,9 @@ namespace Web.Services.Interfaces
         Task<IEnumerable<OrderVm>> GetMyOrder(string userId);
 
         Task<bool> DeleteMyOrder(int orderId);
+
+        Task<List<OrderResponseVM>> GetAllOrder();
+
+        Task<bool> ConfirmOrder(int orderId);
     }
 }

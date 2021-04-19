@@ -23,6 +23,16 @@ namespace Web.Services.Repositories
             _productRepository = productRepository;
         }
 
+        public async Task<bool> ConfirmOrder(int orderId)
+        {
+            var order = await _context.Orders.Where(o => o.Id == orderId).FirstOrDefaultAsync();
+            if (order == null)
+                return false;
+            order.status = true;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<bool> CreateAsync(List<int> productIds, string userId)
         {
             Order order = new Order
@@ -52,6 +62,31 @@ namespace Web.Services.Repositories
                 return true;
             }
             return false;
+        }
+
+        public async Task<List<OrderResponseVM>> GetAllOrder()
+        {
+            var orders = await _context.Orders.Select(o => new OrderResponseVM
+            {
+                orderId = o.Id,
+                orderDate = o.OrderDate,
+                fullname = o.User.FullName,
+                status = o.status
+            }).ToListAsync();
+
+            foreach(var order in orders)
+            {
+                var orderDetails = await _context.OrderDetails.Where(od => od.OrderId == order.orderId)
+                    .Select(od => new OrderDetailResponseVm
+                    {
+                        ProductId = od.ProductId,
+                        ProductName = od.Product.Name,
+                        Price = od.Price,
+                        Total = od.Total
+                    }).ToListAsync();
+                order.products = orderDetails;
+            }
+            return orders;
         }
 
         public async Task<IEnumerable<OrderVm>> GetMyOrder(string userId)

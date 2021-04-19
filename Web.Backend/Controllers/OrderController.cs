@@ -65,5 +65,26 @@ namespace Web.Backend.Controllers
                 return Ok();
             }
         }
+
+        [HttpGet]
+        [Route("get-all")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> GetAllOrder()
+        {
+            var result = await _orderRepository.GetAllOrder();
+            return Ok(result);
+        }
+
+        [HttpPut]
+        [Route("confirm")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> ConfirmOrder(int orderId)
+        {
+            var result = await _orderRepository.ConfirmOrder(orderId);
+            if (result)
+                return Ok();
+            else
+                return NoContent();
+        }
     }
 }
