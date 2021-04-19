@@ -54,7 +54,7 @@ const Orders = () => {
                                                 }
                                             </td>
                                             <td>
-                                                <Link className="btn btn-success mr-1" to='/order-detail'>
+                                                <Link className="btn btn-success mr-1" to={`/order-detail/${item.orderId}`}>
                                                     <i className="fas fa-info-circle" />
                                                     &nbsp; Xem chi tiết
                                                 </Link>

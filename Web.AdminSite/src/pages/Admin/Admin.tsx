@@ -13,6 +13,7 @@ import Categories from './Categories';
 import AddCategory from './AddCategory';
 import EditCategory from './EditCategory';
 import Orders from './Orders';
+import OrderDetail from './OrderDetail';
 
 export const Admin = () => {
     const dispatch = useDispatch();
@@ -52,12 +53,14 @@ export const Admin = () => {
                         <Route exact path='/orders'>
                             <Orders />
                         </Route>
+                        <Route exact path='/order-detail/:id' component={OrderDetail}>
+                        </Route>
                     </div>
                 </div>
                 <footer className="sticky-footer bg-white">
                     <div className="container my-auto">
                         <div className="copyright text-center my-auto">
-                            <span>Copyright © Your Website 2020</span>
+                            <span>Copyright © 2020 by HEAVEN SHOP</span>
                         </div>
                     </div>
                 </footer>

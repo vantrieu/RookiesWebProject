@@ -24,8 +24,6 @@ const EditProduct = (props: any) => {
     }
 
     const [product] = useState(getProductById(Number(id), products) as Product);
-    console.log('product', product)
-
 
     const getCategoryId = () => {
         var temp = categories.find(c => c.name === product?.categoryName);
