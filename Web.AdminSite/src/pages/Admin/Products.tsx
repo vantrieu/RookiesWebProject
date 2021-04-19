@@ -1,11 +1,12 @@
 import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store';
-import { ProductsState } from '../../store/Products/types';
+import { Product, ProductsState } from '../../store/Products/types';
 import { loadProduct } from '../../store/Products/actions';
-import env from 'react-dotenv';
 import { Link } from 'react-router-dom';
 import Pagination from "react-js-pagination";
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; 
 
 const Products = () => {
     const products = useSelector<AppState>((state) => state.products) as ProductsState;
@@ -18,6 +19,23 @@ const Products = () => {
     const handlePageChange = (pageNumber: number) => {
         dispatch(loadProduct(pageNumber, 6));
     }
+
+    const submit = (product: Product) => {
+        confirmAlert({
+          title: 'Cảnh báo!',
+          message: `Bạn muốn xóa sản phẩm ${product.name}`,
+          buttons: [
+            {
+              label: 'Xóa',
+              onClick: () => alert(`Click ${product.id}`)
+            },
+            {
+              label: 'Hủy',
+              onClick: () => alert('Click No')
+            }
+          ]
+        });
+      };
 
     return (
         <Fragment>
@@ -51,7 +69,7 @@ const Products = () => {
                                 return (
                                     <tr key={index}>
                                         <td>
-                                            <img style={{ width: '50px', height: '75px' }} src={env.API_URL + product.productFileImages[0]} alt={product.name} />
+                                            <img style={{ width: '50px', height: '75px' }} src={process.env.REACT_APP_API_URL + product.productFileImages[0]} alt={product.name} />
                                         </td>
                                         <td>{product.name}</td>
                                         <td>{product.quantities}</td>
@@ -63,7 +81,7 @@ const Products = () => {
                                                 <i className="fas fa-edit" />
                                                 &nbsp; Cập nhật
                                             </Link>
-                                            <button className="btn btn-danger ml-1">
+                                            <button className="btn btn-danger ml-1" onClick={() => submit(product)}>
                                                 <i className="far fa-trash-alt" />
                                                 &nbsp; Xóa
                                             </button>

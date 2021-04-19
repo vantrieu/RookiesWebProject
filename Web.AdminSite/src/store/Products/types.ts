@@ -65,38 +65,3 @@ export type ProductsActionTypes =
     | LoadProductsFailure
     | LoadProductsRequest
     | LoadProductsSuccess;
-
-export interface ProductState {
-    item: Product | {},
-    loading: boolean;
-    error: string | null;
-}
-
-export interface LoadProductRequest {
-    type: typeof LOAD_PRODUCT_REQUEST,
-    payload: {
-        loading: boolean;
-    }
-}
-
-export interface LoadProductSuccess {
-    type: typeof LOAD_PRODUCT_SUCCESS,
-    payload: {
-        item: Product;
-        loading: boolean;
-        error: string | null;
-    }
-}
-
-export interface LoadProductFailure {
-    type: typeof LOAD_PRODUCT_FAILURE,
-    payload: {
-        loading: boolean,
-        error: string;
-    }
-}
-
-export type ProductActionTypes =
-    | LoadProductFailure
-    | LoadProductRequest
-    | LoadProductSuccess;

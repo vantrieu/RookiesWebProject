@@ -10,7 +10,6 @@ const login = async (username: string, password: string): Promise<any> => {
 
     return await api.post('/connect/token', urlencoded)
         .then(response => {
-            sessionStorage.setItem('user', JSON.stringify(response.data));
             return response.data;
         })
         .catch(error => {

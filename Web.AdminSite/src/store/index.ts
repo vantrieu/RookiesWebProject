@@ -1,6 +1,6 @@
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import { accountReducer } from "./Account/reducers";
-import { productsReducer, productReducer } from './Products/reducers';
+import { productsReducer} from './Products/reducers';
 import thunkMiddleware from "redux-thunk";
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -11,15 +11,19 @@ import { categoriesReducer } from './Categories/reducers';
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['account']
+    whitelist: [
+      'account',
+      'user', 
+      'products',
+      'categories'
+    ]
 }
 
 const rootReducer = combineReducers({
     account: accountReducer,
     user: usersReducer,
     products: productsReducer,
-    categories: categoriesReducer,
-    product: productReducer
+    categories: categoriesReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
