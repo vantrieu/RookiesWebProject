@@ -2,6 +2,8 @@ export const LOAD_CATEGORIES_REQUEST = 'LOAD_CATEGORIES_REQUEST';
 export const LOAD_CATEGORIES_SUCCESS = 'LOAD_CATEGORIES_SUCCESS';
 export const LOAD_CATEGORIES_FAILURE = 'LOAD_CATEGORIES_FAILURE';
 
+export const DELETE_CATEGORY = 'DELETE_CATEGORY';
+
 export interface Category {
     id: number;
     name: string;
@@ -31,6 +33,13 @@ interface LoadCategoriesFailure {
     }
 }
 
+export interface DeleteCategory {
+    type: typeof DELETE_CATEGORY,
+    payload: {
+        item: Category
+    }
+}
+
 export interface CategoriesState {
     categories: Array<Category>;
     loading: boolean;
@@ -40,4 +49,5 @@ export interface CategoriesState {
 export type CategoriesActionTypes =
 | LoadCategoriesRequest
 | LoadCategoriesSuccess
-| LoadCategoriesFailure;
+| LoadCategoriesFailure
+| DeleteCategory;

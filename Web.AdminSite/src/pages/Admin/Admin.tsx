@@ -10,6 +10,8 @@ import Products from './Products';
 import AddProduct from './AddProduct';
 import EditProduct from './EditProduct';
 import Categories from './Categories';
+import AddCategory from './AddCategory';
+import EditCategory from './EditCategory';
 
 export const Admin = () => {
     const dispatch = useDispatch();
@@ -40,6 +42,11 @@ export const Admin = () => {
                         </Route>
                         <Route exact path='/categories'>
                             <Categories />
+                        </Route>
+                        <Route exact path='/add-category'>
+                            <AddCategory />
+                        </Route>
+                        <Route exact path='/category/:id' component={EditCategory}>
                         </Route>
                     </div>
                 </div>

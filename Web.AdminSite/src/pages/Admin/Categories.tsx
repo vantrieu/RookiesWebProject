@@ -1,9 +1,11 @@
-import React, { ChangeEvent, FormEvent, Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppState } from '../../store';
-import { loadCategories } from '../../store/Categories/actions';
+import { deleteCategory, loadCategories } from '../../store/Categories/actions';
 import { Category } from '../../store/Categories/types';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 const Categories = () => {
     const categories = useSelector<AppState>((state) => state.categories.categories) as Array<Category>;
@@ -13,13 +15,30 @@ const Categories = () => {
         dispatch(loadCategories())
     }, [dispatch])
 
+    const submit = (category: Category) => {
+        confirmAlert({
+            title: 'Cảnh báo!',
+            message: `Bạn muốn xóa loại sản phẩm: ${category.name}`,
+            buttons: [
+                {
+                    label: 'Xóa',
+                    onClick: () => dispatch(deleteCategory(category.id))
+                },
+                {
+                    label: 'Hủy',
+                    onClick: () => {}
+                }
+            ]
+        });
+    };
+
     return (
         <Fragment>
             <div className="row">
                 <div className="col-6">
                 </div>
                 <div className="col-6 text-right mb-2">
-                    <Link className="btn btn-success" to='/add-product'>
+                    <Link className="btn btn-success" to='/add-category'>
                         <i className="fas fa-plus" />
                         &nbsp; Thêm mới loại sản phẩm
                     </Link>
@@ -50,9 +69,9 @@ const Categories = () => {
                                             <td>
                                                 <Link className="btn btn-success mr-1" to={'/category/' + item.id.toString()}>
                                                     <i className="fas fa-edit" />
-                                                &nbsp; Cập nhật
-                                            </Link>
-                                                <button className="btn btn-danger ml-1">
+                                                    &nbsp; Cập nhật
+                                                </Link>
+                                                <button className="btn btn-danger ml-1" onClick={() => submit(item)}>
                                                     <i className="far fa-trash-alt" />
                                                 &nbsp; Xóa
                                             </button>

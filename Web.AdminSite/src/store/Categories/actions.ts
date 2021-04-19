@@ -2,6 +2,7 @@ import { categoryService } from './../../services/category.service';
 import { Dispatch } from "react";
 import { 
     CategoriesActionTypes, 
+    DELETE_CATEGORY, 
     LOAD_CATEGORIES_FAILURE, 
     LOAD_CATEGORIES_REQUEST,
     LOAD_CATEGORIES_SUCCESS
@@ -33,5 +34,17 @@ export const loadCategories = () => {
                 }
             });
         }
+    }
+}
+
+export const deleteCategory = (id: number) => {
+    return async (dispatch: Dispatch<CategoriesActionTypes>) => {
+        const response = await categoryService.DeleteCategory(id);
+        dispatch({
+            type: DELETE_CATEGORY,
+            payload: {
+                item: response
+            }
+        });
     }
 }
