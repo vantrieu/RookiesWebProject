@@ -6,13 +6,13 @@ using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class IdentityDbConfig
     {
-        public static void MigrateIdServerDb(this IApplicationBuilder app)
+        public static void MigrateIdServerDb(this IApplicationBuilder app, IConfiguration configuration)
         {
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
@@ -44,9 +44,9 @@ namespace Microsoft.Extensions.DependencyInjection
 
                         AllowedGrantTypes = GrantTypes.Code,
 
-                        RedirectUris = { "https://localhost:44325/signin-oidc" },
+                        RedirectUris = { configuration["IdentityDbConfig:MVC:RedirectUris"] },
 
-                        PostLogoutRedirectUris = { "https://localhost:44325/signout-callback-oidc" },
+                        PostLogoutRedirectUris = { configuration["IdentityDbConfig:MVC:PostLogoutRedirectUris"] },
 
                         AllowedScopes = new List<string>
                         {
@@ -77,7 +77,7 @@ namespace Microsoft.Extensions.DependencyInjection
                             "rookieshop.api"
                         },
 
-                        // AccessTokenLifetime = 90,
+                        AccessTokenLifetime = 604800,
                         AllowOfflineAccess = true,
 
                     });
@@ -94,9 +94,9 @@ namespace Microsoft.Extensions.DependencyInjection
                         RequireConsent = false,
                         RequirePkce = true,
 
-                        RedirectUris = { $"https://localhost:44314/swagger/oauth2-redirect.html" },
-                        PostLogoutRedirectUris = { $"https://localhost:44314/swagger/oauth2-redirect.html" },
-                        AllowedCorsOrigins = { $"https://localhost:44314" },
+                        RedirectUris = { configuration["IdentityDbConfig:Swagger:RedirectUris"] },
+                        PostLogoutRedirectUris = { configuration["IdentityDbConfig:Swagger:PostLogoutRedirectUris"] },
+                        AllowedCorsOrigins = { configuration["IdentityDbConfig:Swagger:AllowedCorsOrigins"] },
 
                         AllowedScopes = new List<string>
                         {
