@@ -1,4 +1,7 @@
 import axios from 'axios';
+import { history } from './history';
+import { logout } from '../store/Account/actions';
+import { store } from '../store';
 
 const api = axios.create({
   baseURL: `${process.env.REACT_APP_API_URL}`,
@@ -18,7 +21,8 @@ api.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err.response.status === 401) {
-      //todo
+      store.dispatch(logout());
+      history.push('/');
     }
     return Promise.reject(err);
   }

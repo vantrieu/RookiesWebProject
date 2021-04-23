@@ -47,13 +47,8 @@ const CheckRole = async (): Promise<any> =>{
     });
 }
 
-const logout = () => {
-    sessionStorage.removeItem('user');
-}
-
 export const userService = {
     login,
-    logout,
     getCurrentLoginUser,
     getListUser,
     lockUserById,

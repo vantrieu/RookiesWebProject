@@ -12,6 +12,8 @@ const EditCategory = (props: any) => {
     const dispatch = useDispatch();
     const categories = useSelector<AppState>((state) => state.categories.categories) as Array<Category>;
 
+    const [submitted, setSubmitted] = useState(false);
+
     const GetCategoryById = (id: Number, listCategory: Array<Category>) => {
         return listCategory.find(c => {
             return c.id === id
@@ -37,9 +39,10 @@ const EditCategory = (props: any) => {
     const { name, description } = formInput;
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if( name && description ){
+        setSubmitted(true);
+        if (name && description) {
             const result = await categoryService.UpdateCategory(Number(id), name, description);
-            if(result === 200)
+            if (result === 200)
                 history.goBack()
         }
     };
@@ -53,11 +56,25 @@ const EditCategory = (props: any) => {
                     <form onSubmit={handleSubmit}>
                         <div className='form-group'>
                             <label>Tên loại sản phẩm</label>
-                            <input type='text' className="form-control" onChange={handleChange} defaultValue={category?.name} name='name' placeholder='Nhập tên loại sản phẩm...' />
+                            <div className="row m-2">
+                                <input type='text' className={"form-control" + (submitted && !name ? ' is-invalid col-11' : '')} onChange={handleChange} defaultValue={category?.name} name='name' placeholder='Nhập tên loại sản phẩm...' />
+                                {submitted && !name && (
+                                    <div className='invalid-feedback col-1'>
+                                        Tên là bắt buộc
+                                    </div>
+                                )}
+                            </div>
                         </div>
                         <div className='form-group'>
                             <label>Mô tả</label>
-                            <input className="form-control" onChange={handleChange} defaultValue={category?.description} name='description' placeholder='Nhập mô tả...' />
+                            <div className="row m-2">
+                                <input className={"form-control" + (submitted && !name ? ' is-invalid col-11' : '')} onChange={handleChange} defaultValue={category?.description} name='description' placeholder='Nhập mô tả...' />
+                                {submitted && !name && (
+                                    <div className='invalid-feedback col-1'>
+                                        Tên là bắt buộc
+                                    </div>
+                                )}
+                            </div>
                         </div>
                         <div className='form-group'>
                             <button className='btn btn-primary mr-1' type='submit'>

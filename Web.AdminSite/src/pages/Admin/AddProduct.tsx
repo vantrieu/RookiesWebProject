@@ -10,7 +10,6 @@ import { productService } from './../../services/product.service'
 const AddProduct = () => {
     const categories = useSelector<AppState>((state) => state.categories.categories) as Array<Category>;
     const dispatch = useDispatch();
-    const [formSubmitted, setFormSubmitted] = useState(false);
     const [selectImages, setSelectimages] = useState(Array<string>());
     const [formData, setFormData] = useState(new FormData());
     const [formInput, setFormInput] = useState({
@@ -54,7 +53,6 @@ const AddProduct = () => {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setFormSubmitted(true);
         if (name && description && price && quantities && categoryId) {
             const formDataSubmit = formData;
             formDataSubmit.append('name', formInput.name);

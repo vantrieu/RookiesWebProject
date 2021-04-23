@@ -37,9 +37,8 @@ export const login = (username: string, password: string, from: string) => {
 }
 
 export const logout = (): AccountActionTypes => {
-    userService.logout();
-    return { type: LOG_OUT }
-}
+    return { type: LOG_OUT };
+};
 
 export const getCurrentLoginUser = () => {
     return async (dispatch: Dispatch<AccountActionTypes>) => {

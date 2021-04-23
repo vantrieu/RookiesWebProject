@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, Fragment, useState } from 'react'
+import { ChangeEvent, FormEvent, Fragment, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { history } from '../../helpers';
 import { categoryService } from '../../services/category.service';
@@ -9,6 +9,8 @@ const AddCategory = () => {
         description: ''
     });
 
+    const [submitted, setSubmitted] = useState(false);
+
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormInput((inputs) => ({ ...inputs, [name]: value }));
@@ -18,12 +20,13 @@ const AddCategory = () => {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if( name && description ){
+        setSubmitted(true);
+        if (name && description) {
             await categoryService.CreateCategory(name, description);
             history.goBack();
         }
     };
-    
+
     return (
         <Fragment>
             <h1 className='h3 mb-4 text-gray-800'>Thêm mới loại sản phẩm</h1>
@@ -33,11 +36,25 @@ const AddCategory = () => {
                     <form onSubmit={handleSubmit}>
                         <div className='form-group'>
                             <label>Tên loại sản phẩm</label>
-                            <input type='text' className="form-control"  onChange={handleChange} name='name' placeholder='Nhập tên loại sản phẩm...' />
+                            <div className="row m-2">
+                                <input type='text' className={"form-control" + (submitted && !name ? ' is-invalid col-11' : '')} onChange={handleChange} name='name' placeholder='Nhập tên loại sản phẩm...' />
+                                {submitted && !name && (
+                                    <div className='invalid-feedback col-1'>
+                                        Tên là bắt buộc
+                                    </div>
+                                )}
+                            </div>
                         </div>
                         <div className='form-group'>
                             <label>Mô tả</label>
-                            <input className="form-control"  onChange={handleChange} name='description' placeholder='Nhập mô tả...' />
+                            <div className="row m-2">
+                                <input className={"form-control" + (submitted && !description ? ' is-invalid col-11' : '')} onChange={handleChange} name='description' placeholder='Nhập mô tả...' />
+                                {submitted && !description && (
+                                    <div className='invalid-feedback col-1' >
+                                        Mô tả là bắt buộc
+                                    </div>
+                                )}
+                            </div>
                         </div>
                         <div className='form-group'>
                             <button className='btn btn-primary mr-1' type='submit'>

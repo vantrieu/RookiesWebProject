@@ -4,6 +4,7 @@ import { AppState } from '../../store';
 import { Order } from '../../store/Orders/types';
 import { confirmOrder, loadOrders } from '../../store/Orders/actions';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 const Orders = () => {
     const orders = useSelector<AppState>((state) => state.orders.orders) as Array<Order>;
@@ -39,7 +40,7 @@ const Orders = () => {
                                             <td>{item.orderId}</td>
                                             <td>{item.fullname}</td>
                                             <td>{item.phoneNumber}</td>
-                                            <td>{item.orderDate}</td>
+                                            <td>{moment(item.orderDate.toString()).format('DD/MM/YYYY')}</td>
                                             <td>
                                                 {
                                                     item.status ?

@@ -5,7 +5,8 @@ import { Product, ProductsState } from '../../store/Products/types';
 import { deleteProduct, loadProduct } from '../../store/Products/actions';
 import { Link } from 'react-router-dom';
 import Pagination from "react-js-pagination";
-import { confirmAlert } from 'react-confirm-alert'; // Import
+import { confirmAlert } from 'react-confirm-alert';
+import moment from 'moment'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
 
 const Products = () => {
@@ -74,8 +75,8 @@ const Products = () => {
                                         <td>{product.name}</td>
                                         <td>{product.quantities}</td>
                                         <td>{product.price}</td>
-                                        <td>{product.createdDate}</td>
-                                        <td>{product.updatedDate}</td>
+                                        <td>{moment(product.createdDate.toString()).format('DD/MM/YYYY')}</td>
+                                        <td>{moment(product.updatedDate.toString()).format('DD/MM/YYYY')}</td>
                                         <td>
                                             <Link className="btn btn-success mr-1" to={'/product/'+product.id.toString()}>
                                                 <i className="fas fa-edit" />

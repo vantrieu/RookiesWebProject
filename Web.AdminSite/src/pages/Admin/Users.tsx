@@ -41,8 +41,14 @@ const Users = () => {
                                             <td>
                                                 {
                                                     (user.lockoutEnd) ?
-                                                        <button className="btn btn-danger" onClick={() => dispatch(unLockUser(user.userId))}>Mở khóa</button> :
-                                                        <button className="btn btn-success" onClick={() => dispatch(lockUser(user.userId))}>Khóa</button>
+                                                        <button className="btn btn-danger" onClick={() => dispatch(unLockUser(user.userId))}>
+                                                            <i className="fas fa-lock" />
+                                                            &nbsp; Mở khóa
+                                                        </button> :
+                                                        <button className="btn btn-success" onClick={() => dispatch(lockUser(user.userId))}>
+                                                            <i className="fas fa-lock-open" />
+                                                            &nbsp; Khóa
+                                                        </button>
                                                 }
                                             </td>
                                         </tr>
