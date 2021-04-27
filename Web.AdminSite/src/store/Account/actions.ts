@@ -15,18 +15,20 @@ export const login = (username: string, password: string, from: string) => {
 
         try {
             const response = await userService.login(username, password);
-            dispatch({
-                type: LOGIN_SUCCESS,
-                payload: response,
-            });
-            const statusCode = await userService.CheckRole();
-            if (statusCode !== 200) {
+            const res = await userService.CheckRole(response.access_token);
+            if(res === 200){
                 dispatch({
-                    type: LOG_OUT
-                })
-                history.push('/');
+                    type: LOGIN_SUCCESS,
+                    payload: response,
+                });
+                history.push(from);
             }
-            history.push(from);
+            else {
+                dispatch({
+                    type: LOGIN_FAILURE,
+                    payload: { error: 'Login failure!' },
+                });
+            }
         } catch (error) {
             dispatch({
                 type: LOGIN_FAILURE,

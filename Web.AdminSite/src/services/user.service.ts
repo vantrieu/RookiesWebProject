@@ -9,7 +9,7 @@ const login = async (username: string, password: string): Promise<any> => {
     urlencoded.append("client_secret", "secret");
 
     return await api.post('/connect/token', urlencoded)
-        .then(response => {
+        .then(async response => {
             return response.data;
         })
         .catch(error => {
@@ -41,7 +41,8 @@ const unLockUserById = async (id: string): Promise<any> => {
     });
 }
 
-const CheckRole = async (): Promise<any> =>{
+const CheckRole = async (token: string): Promise<any> => {
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`
     return await api.get<any>('/api/v1/User/roles').then((respone) => {
         return respone.status;
     });
