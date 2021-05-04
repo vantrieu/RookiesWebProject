@@ -5,7 +5,8 @@ import { history } from '../../helpers';
 import { AppState } from '../../store';
 import { loadCategories } from '../../store/Categories/actions';
 import { Category } from '../../store/Categories/types';
-import { productService } from './../../services/product.service'
+import { productService } from './../../services/product.service';
+import { ShowNotify } from '../../store/Notify/actions';
 
 const AddProduct = () => {
     const categories = useSelector<AppState>((state) => state.categories.categories) as Array<Category>;
@@ -61,6 +62,7 @@ const AddProduct = () => {
             formDataSubmit.append('quantities', formInput.quantities.toString());
             formDataSubmit.append('categoryId', formInput.categoryId.toString());
             await productService.CreateProduct(formData);
+            dispatch(ShowNotify('Thêm sản phẩm thành công!'));
             history.goBack()
         }
 

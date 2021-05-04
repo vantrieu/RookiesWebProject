@@ -8,6 +8,7 @@ import { setAuthToken } from '../helpers';
 import { usersReducer } from './Users/reducers';
 import { categoriesReducer } from './Categories/reducers';
 import { ordersReducer } from './Orders/reducers';
+import { notifyReducer } from "./Notify/reducers";
 
 const persistConfig = {
     key: 'root',
@@ -26,7 +27,8 @@ const rootReducer = combineReducers({
     user: usersReducer,
     products: productsReducer,
     categories: categoriesReducer,
-    orders: ordersReducer
+    orders: ordersReducer,
+    notify: notifyReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

@@ -6,6 +6,7 @@ import { deleteCategory, loadCategories } from '../../store/Categories/actions';
 import { Category } from '../../store/Categories/types';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { ShowNotify } from '../../store/Notify/actions';
 
 const Categories = () => {
     const categories = useSelector<AppState>((state) => state.categories.categories) as Array<Category>;
@@ -22,7 +23,10 @@ const Categories = () => {
             buttons: [
                 {
                     label: 'Xóa',
-                    onClick: () => dispatch(deleteCategory(category.id))
+                    onClick: () => {
+                        dispatch(deleteCategory(category.id));
+                        dispatch(ShowNotify('Đã xóa loại sản phẩm vừa chạy!'));
+                    }
                 },
                 {
                     label: 'Hủy',

@@ -8,6 +8,7 @@ import Pagination from "react-js-pagination";
 import { confirmAlert } from 'react-confirm-alert';
 import moment from 'moment'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
+import { ShowNotify } from '../../store/Notify/actions';
 
 const Products = () => {
     const products = useSelector<AppState>((state) => state.products) as ProductsState;
@@ -28,7 +29,10 @@ const Products = () => {
           buttons: [
             {
               label: 'Xóa',
-              onClick: () => dispatch(deleteProduct(product.id))
+              onClick: () => {
+                  dispatch(deleteProduct(product.id));
+                  dispatch(ShowNotify('Đã xóa sản phẩm!'));
+                }
             },
             {
               label: 'Hủy',

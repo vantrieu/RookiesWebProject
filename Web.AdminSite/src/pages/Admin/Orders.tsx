@@ -5,6 +5,7 @@ import { Order } from '../../store/Orders/types';
 import { confirmOrder, loadOrders } from '../../store/Orders/actions';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import { ShowNotify } from '../../store/Notify/actions';
 
 const Orders = () => {
     const orders = useSelector<AppState>((state) => state.orders.orders) as Array<Order>;
@@ -48,7 +49,10 @@ const Orders = () => {
                                                             <i className="far fa-check-circle" />
                                                             &nbsp; Đã xác nhận
                                                         </label> :
-                                                        <button className='btn btn-danger' onClick={() => dispatch(confirmOrder(item.orderId))}>
+                                                        <button className='btn btn-danger' onClick={() => {
+                                                            dispatch(confirmOrder(item.orderId));
+                                                            dispatch(ShowNotify('Đã xác nhận đơn hàng!'));
+                                                        }}>
                                                             <i className="far fa-window-close" />
                                                             &nbsp; Chưa xác nhận
                                                         </button>

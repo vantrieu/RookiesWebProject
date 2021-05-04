@@ -7,6 +7,7 @@ import { Category } from '../../store/Categories/types';
 import { Product } from '../../store/Products/types';
 import { history } from '../../helpers';
 import { productService } from '../../services/product.service';
+import { ShowNotify } from '../../store/Notify/actions';
 
 const EditProduct = (props: any) => {
     const id = props.match.params.id;
@@ -87,6 +88,7 @@ const EditProduct = (props: any) => {
             formDataSubmit.append('quantities', formInput.quantities.toString());
             formDataSubmit.append('categoryId', formInput.categoryId.toString());
             await productService.UpdateProductById(id, formDataSubmit);
+            dispatch(ShowNotify('Chỉnh sửa sản phẩm thành công!'));
             history.goBack()
         }
 

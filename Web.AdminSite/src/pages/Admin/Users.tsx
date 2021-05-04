@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../store';
 import { loadUsers, lockUser, unLockUser } from '../../store/Users/actions';
 import { User } from '../../store/Users/types';
+import { ShowNotify } from '../../store/Notify/actions';
 
 const Users = () => {
     const users = useSelector<AppState>((state) => state.user.users) as Array<User>;
@@ -11,6 +12,16 @@ const Users = () => {
     useEffect(() => {
         dispatch(loadUsers());
     }, [dispatch])
+
+    const unLock = (userId: string) => {
+        dispatch(unLockUser(userId));
+        dispatch(ShowNotify(`Đã mở khóa tài khoản ID: ${userId}!`));
+    }
+
+    const lock = (userId: string) => {
+        dispatch(lockUser(userId));
+        dispatch(ShowNotify(`Đã khóa tài khoản ID: ${userId}!`));
+    }
 
     return (
         <Fragment>
@@ -41,11 +52,11 @@ const Users = () => {
                                             <td>
                                                 {
                                                     (user.lockoutEnd) ?
-                                                        <button className="btn btn-danger" onClick={() => dispatch(unLockUser(user.userId))}>
+                                                        <button className="btn btn-danger" onClick={() => unLock(user.userId)}>
                                                             <i className="fas fa-lock" />
                                                             &nbsp; Mở khóa
                                                         </button> :
-                                                        <button className="btn btn-success" onClick={() => dispatch(lockUser(user.userId))}>
+                                                        <button className="btn btn-success" onClick={() => lock(user.userId)}>
                                                             <i className="fas fa-lock-open" />
                                                             &nbsp; Khóa
                                                         </button>

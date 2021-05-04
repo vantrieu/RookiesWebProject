@@ -6,6 +6,7 @@ import { AppState } from '../../store';
 import { loadCategories } from '../../store/Categories/actions';
 import { Category } from '../../store/Categories/types';
 import { history } from '../../helpers';
+import { ShowNotify } from '../../store/Notify/actions';
 
 const EditCategory = (props: any) => {
     const id = props.match.params.id;
@@ -42,8 +43,10 @@ const EditCategory = (props: any) => {
         setSubmitted(true);
         if (name && description) {
             const result = await categoryService.UpdateCategory(Number(id), name, description);
-            if (result === 200)
+            if (result === 200) {
+                dispatch(ShowNotify('Chỉnh sửa thông tin loại sản phẩm thành công!'));
                 history.goBack()
+            }
         }
     };
 

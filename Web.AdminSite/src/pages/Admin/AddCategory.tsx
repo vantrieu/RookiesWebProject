@@ -1,7 +1,9 @@
 import { ChangeEvent, FormEvent, Fragment, useState } from 'react'
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { history } from '../../helpers';
 import { categoryService } from '../../services/category.service';
+import { ShowNotify } from '../../store/Notify/actions';
 
 const AddCategory = () => {
     const [formInput, setFormInput] = useState({
@@ -10,6 +12,7 @@ const AddCategory = () => {
     });
 
     const [submitted, setSubmitted] = useState(false);
+    const dispatch = useDispatch();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -23,6 +26,7 @@ const AddCategory = () => {
         setSubmitted(true);
         if (name && description) {
             await categoryService.CreateCategory(name, description);
+            dispatch(ShowNotify('Thêm mới loại sản phẩm thành công!'));
             history.goBack();
         }
     };

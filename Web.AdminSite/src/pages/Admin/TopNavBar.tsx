@@ -1,13 +1,22 @@
-import { useState } from "react";
-import { useDispatch, useSelector} from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/Account/actions";
 import { AppState } from '../../store';
 import { AuthenticatedUser } from "../../store/Account/types";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { NotifyState } from "../../store/Notify/types";
 
 const TopNavBar = () => {
     const [isShowProfilemenuDropdown, setIsShowProfilemenuDropdown] = useState(false);
     const dispatch = useDispatch();
     const user = useSelector<AppState>((state) => state.account.user) as AuthenticatedUser;
+
+    const nofify = useSelector<AppState>((state) => state.notify) as NotifyState;
+    useEffect(() => {
+        toast.success(nofify.message);
+    }, [nofify.message])
+
     return (
         <div>
             <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
@@ -15,7 +24,7 @@ const TopNavBar = () => {
                     {/* Nav Item - User Information */}
                     <li className={"nav-item dropdown no-arrow" + (isShowProfilemenuDropdown ? ' show' : '')}>
                         <label className="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded= {isShowProfilemenuDropdown ? 'true' : 'false'} onClick={() => setIsShowProfilemenuDropdown(!isShowProfilemenuDropdown)}>
+                            aria-expanded={isShowProfilemenuDropdown ? 'true' : 'false'} onClick={() => setIsShowProfilemenuDropdown(!isShowProfilemenuDropdown)}>
                             <span className="mr-2 d-none d-lg-inline text-gray-600 small">{user?.fullName}</span>
                             <img className="img-profile rounded-circle" src="/undraw_profile.svg" alt="undraw_profile" />
                         </label>
@@ -29,6 +38,10 @@ const TopNavBar = () => {
                     </li>
                 </ul>
             </nav>
+            <ToastContainer
+                position="bottom-left"
+                autoClose={5000}
+            />
         </div>
     )
 }
